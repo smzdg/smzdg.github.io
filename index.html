@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>未耳的辰凡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="My site">
+<meta property="og:type" content="website">
+<meta property="og:title" content="未耳的辰凡">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="My site">
+<meta property="article:author" content="smzdg">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="未耳的辰凡" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">未耳的辰凡</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-5338.二叉树的最长交错路径" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/" class="article-date">
+  <time datetime="2020-03-09T15:18:27.387Z" itemprop="datePublished">2020-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/">5338.二叉树的最长交错路径</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="5338-二叉树中的最长交错路径"><a href="#5338-二叉树中的最长交错路径" class="headerlink" title="5338_二叉树中的最长交错路径"></a>5338_二叉树中的最长交错路径</h1><blockquote>
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3></blockquote>
+<p>给你一棵以 root 为根的二叉树，二叉树中的交错路径定义如下：</p>
+<ul>
+<li>选择二叉树中 任意 节点和一个方向（左或者右）。</li>
+<li>如果前进方向为右，那么移动到当前节点的的右子节点，否则移动到它的左子节点。</li>
+<li>改变前进方向：左变右或者右变左。</li>
+<li>重复第二步和第三步，直到你在树中无法继续移动。</li>
+</ul>
+<p>交错路径的长度定义为：访问过的节点数目 - 1（单个节点的路径长度为 0 ）。</p>
+<p>请你返回给定树中最长 交错路径 的长度。</p>
+<blockquote>
+<h3 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h3></blockquote>
+<p><a href="https://leetcode-cn.com/problems/longest-zigzag-path-in-a-binary-tree/" target="_blank" rel="noopener">LeedCode Q5338</a></p>
+<blockquote>
+<h3 id="比赛小结"><a href="#比赛小结" class="headerlink" title="比赛小结"></a>比赛小结</h3></blockquote>
+<p>这道题是我比较熟悉的二叉树类型,总体思路是可以通过的,但是在小细节上问题很多,最后淹没在了细节里.</p>
+<p>没能做出这道题的一个最重要的原因是没有发现这道题属于动态规划问题,是给出数字而不是具体过程.所以方法太过复杂.</p>
+<blockquote>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3></blockquote>
+<h3 id="我的解法"><a href="#我的解法" class="headerlink" title="我的解法"></a>我的解法</h3><p>毫无疑问这道题可以边遍历边查找暴力解出.但毫无疑问会超时,所以我们应该要考虑剪枝.</p>
+<p>我们可以发现,如果一个节点进行了深度探测,那么相当于后面的节点也有一边做了探测,<br>而且在这条路径上必定比祖父节点的深度小.所以我们可以把这些节点全部记录下来,在遍历这些节点的时候就不用重复再检查了.</p>
+<p>但是这种解法适合于需要给出路径而不适合只需要给出数字结果的.所以这道题使用动态规划效率更高.</p>
+<p><code>利用了哈希表记录节点是否已经进行过探测,可以不用层次遍历(这是比赛时最初的思路用的)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    map&lt;TreeNode* ,int&gt; tmap;</span><br><span class="line">    int longestZigZag(TreeNode* root) &#123;</span><br><span class="line">        int max&#x3D;0;</span><br><span class="line">        int high;</span><br><span class="line">        queue&lt;TreeNode*&gt; qu;</span><br><span class="line">        qu.push(root);</span><br><span class="line">        tmap[root]&#x3D;0;</span><br><span class="line">        dfs(root);</span><br><span class="line">        while(!qu.empty())&#123;</span><br><span class="line">            TreeNode* node&#x3D;qu.front();</span><br><span class="line">            qu.pop();</span><br><span class="line">            int r&#x3D;tmap[node];</span><br><span class="line">            if(node-&gt;left!&#x3D;NULL)&#123;</span><br><span class="line">                if(r!&#x3D;2)&#123;</span><br><span class="line">                    high&#x3D;getHigh(node-&gt;left,1,1);</span><br><span class="line">                    if(high&gt;max) max&#x3D;high;</span><br><span class="line">                &#125;</span><br><span class="line">                qu.push(node-&gt;left);</span><br><span class="line">            &#125;</span><br><span class="line">            if(node-&gt;right!&#x3D;NULL)&#123;</span><br><span class="line">                if(r!&#x3D;1)&#123;</span><br><span class="line">                    high&#x3D;getHigh(node-&gt;right,2,1);</span><br><span class="line">                    if(high&gt;max) max&#x3D;high;</span><br><span class="line">                &#125;</span><br><span class="line">                qu.push(node-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return max;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void dfs(TreeNode* tn)&#123;</span><br><span class="line">        if(tn&#x3D;&#x3D;NULL) return;</span><br><span class="line">        tmap[tn]&#x3D;0;</span><br><span class="line">        dfs(tn-&gt;left);</span><br><span class="line">        dfs(tn-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int getHigh(TreeNode* node,int kk,int high)&#123;</span><br><span class="line">        if(kk&#x3D;&#x3D;2&amp;&amp;node-&gt;left!&#x3D;NULL)&#123;</span><br><span class="line">            tmap[node-&gt;left]&#x3D;1;		</span><br><span class="line">            return getHigh(node-&gt;left,1,high+1);</span><br><span class="line">        &#125;</span><br><span class="line">        if(kk&#x3D;&#x3D;1&amp;&amp;node-&gt;right!&#x3D;NULL)&#123;</span><br><span class="line">            tmap[node-&gt;right]&#x3D;2;</span><br><span class="line">            return getHigh(node-&gt;right,2,high+1);</span><br><span class="line">        &#125;</span><br><span class="line">        return high;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>对于每个节点,左深度就是左孩子的右深度加1,右深度就是右孩子的左深度加1,如果没有孩子则是0</p>
+<p><code>因为需要查看孩子节点的深度情况,我们需要在遍历的时候记录下来,这里使用的是哈希表</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    unordered_map&lt;TreeNode* ,int&gt; leftHigh,rightHigh;</span><br><span class="line">    int ans;</span><br><span class="line">    int longestZigZag(TreeNode* root) &#123;</span><br><span class="line">        ans&#x3D;0;</span><br><span class="line">        dfs(root);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    void dfs(TreeNode* node)&#123;</span><br><span class="line">        if(node&#x3D;&#x3D;NULL) return ;</span><br><span class="line">        if(node-&gt;left!&#x3D;NULL)&#123;</span><br><span class="line">            dfs(node-&gt;left);</span><br><span class="line">            leftHigh[node]&#x3D;rightHigh[node-&gt;left]+1;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            leftHigh[node]&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        if(node-&gt;right!&#x3D;NULL)&#123;</span><br><span class="line">            dfs(node-&gt;right);</span><br><span class="line">            rightHigh[node]&#x3D;leftHigh[node-&gt;right]+1;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            rightHigh[node]&#x3D;0;</span><br><span class="line">        &#125;</span><br><span class="line">        ans&#x3D;max(ans,max(leftHigh[node],rightHigh[node]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/" data-id="ck7kmaplg0000h4rl6rb83jt4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/09/hello-world/" class="article-date">
+  <time datetime="2020-03-09T14:27:57.877Z" itemprop="datePublished">2020-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/09/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/09/hello-world/" data-id="ck7kmapln0001h4rl5y9gdgzj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/">5338.二叉树的最长交错路径</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/09/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 smzdg<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
