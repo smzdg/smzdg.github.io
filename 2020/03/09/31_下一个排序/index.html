@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>31_下一个排序 | 未耳的辰凡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="31.下一个排序 题目描述 实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。 必须原地修改，只允许使用额外常数空间。  示例 1,2,3 → 1,3,2 3,2,1 → 1,2,3 1,1,5 → 1,5,1  来源 LeedCode Q31   问题分析 “下一个排序”是什么？ 我们可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="31_下一个排序">
+<meta property="og:url" content="http://yoursite.com/2020/03/09/31_%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="31.下一个排序 题目描述 实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。 必须原地修改，只允许使用额外常数空间。  示例 1,2,3 → 1,3,2 3,2,1 → 1,2,3 1,1,5 → 1,5,1  来源 LeedCode Q31   问题分析 “下一个排序”是什么？ 我们可以">
+<meta property="article:published_time" content="2020-03-09T15:42:03.065Z">
+<meta property="article:modified_time" content="2020-03-09T02:02:50.264Z">
+<meta property="article:author" content="smzdg">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="未耳的辰凡" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">未耳的辰凡</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-31_下一个排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/09/31_%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%BA%8F/" class="article-date">
+  <time datetime="2020-03-09T15:42:03.065Z" itemprop="datePublished">2020-03-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      31_下一个排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="31-下一个排序"><a href="#31-下一个排序" class="headerlink" title="31.下一个排序"></a>31.下一个排序</h1><blockquote>
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3></blockquote>
+<p>实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。</p>
+<p>如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。</p>
+<p>必须原地修改，只允许使用额外常数空间。</p>
+<blockquote>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3></blockquote>
+<p><code>1,2,3</code> → <code>1,3,2</code></p>
+<p><code>3,2,1</code> → <code>1,2,3</code></p>
+<p><code>1,1,5</code> → <code>1,5,1</code></p>
+<blockquote>
+<h3 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h3></blockquote>
+<p><a href="https://leetcode-cn.com/problems/next-permutation/" target="_blank" rel="noopener">LeedCode Q31</a></p>
+<hr>
+<blockquote>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3></blockquote>
+<h4 id="“下一个排序”是什么？"><a href="#“下一个排序”是什么？" class="headerlink" title="“下一个排序”是什么？"></a>“下一个排序”是什么？</h4><p> 我们可以写出一个数字更多的例子来观察</p>
+<p> <code>1234</code></p>
+<p> <code>1243</code></p>
+<p> <code>1324</code></p>
+<p> <code>1342</code></p>
+<p> <code>1423</code></p>
+<p> <code>1432</code></p>
+<p> <code>2134</code></p>
+<p> <code>2143</code></p>
+<p> <code>2314</code></p>
+<p> <code>2342</code></p>
+<p> <code>...</code></p>
+<p> 建议读者自己也写一遍，以便于更好的理解我下面的话</p>
+<p> 我们在写的时候是如何得到下一个的？为了得到比当前排列大的排列中最小的那个，我们需要保证大小在增加，但增加的幅度是最小的。<br> 所以我们会让小的数字尽可能的处在高位，大的数字处在低位。因为起始情况是小的最优解，我们每次变换应该尽可能的只动较低的位。</p>
+<p> 具体的来看，从<code>1234</code>开始，我们只动最后两位数，让他们交换。到了<code>1243</code>,必须要动百位了，我们才从后两位中找出大于旧的百位的数，然后再从中选出最小的做新的百位<br> (显然我们不可能选一个比旧的百位小的数去做新百位，虽然暂时在这里还没有这样的数)。<br> 一直到<code>1432</code>,我们便不得不动千位了，于是我们从后三位中选出大于旧千位的，但是是最小的一个做新的千位。</p>
+<p> 如果读者还是很难理解，我们以<code>2431</code>做例子。我们需要改变千位，但我们不可能选1，那样反而会变小。所以我们选3,4中较小的3做新的千位。</p>
+<p> 什么时候我们需要动更高位？通过观察我们不难发现，只有低位已经是从高到低是从大到小排列的(例如<code>1243</code>中的<code>43</code>,<code>1432</code>中的<code>432</code>)，也就是低位全部满足了<code>nums[n+1]&gt;nums[n]</code>，<br> 我们把这样的情况命名为k位下有序(如<code>1243</code>就是百位下有序，<code>1432</code>就是千位下有序)，<br> 此时较低位已经到了他们的最大值，我们必须要改变更高位才能得到更大的数，这是我们解决这道题最重要的概念。</p>
+<p> 当排列来到最大(如<code>4321</code>)，依题意我们需要重新排列成最小的排列。</p>
+<h4 id="如何得到下一个排序"><a href="#如何得到下一个排序" class="headerlink" title="如何得到下一个排序"></a>如何得到下一个排序</h4><p>k位下有序有什么用呢？它可以帮我们找到我们需要改变的最高位。</p>
+<p>对于任何一个排列，都必然满足十位下有序，因为后面只有一个个位，一个数自然有序。</p>
+<p>对于有的排列可以满足更高位下的有序，我们首先要做的就是找到满足k位下有序的最高位。</p>
+<p>此时我们可以发现，得到下一个排列应该分两步：改变需要改变的所有位中的最高位，然后对后面排序即可。</p>
+<p>这时我们已经可以把如何得到下一个排序的具体步骤写出来了：</p>
+<ol>
+<li>找到最大的k位下有序</li>
+<li>改变k位：从后面的数中找出大于原k位上的数的数，然后在这些数中选出最小的一个替换</li>
+<li>将k位后面的数字重新排序</li>
+</ol>
+<h4 id="得到代码"><a href="#得到代码" class="headerlink" title="得到代码"></a>得到代码</h4><p>检测是否i+1位后是否有序 </p>
+<pre><code>bool posi(vector&lt;int&gt; nums,int i){      //无序返回false
+    while(i&lt;nums.size()-1){
+        if(nums[i]&lt;nums[i+1]){
+            return false;
+        }
+        i++;
+    }
+    return true;
+}</code></pre><p>改变k位 </p>
+<pre><code>void getNext(vector&lt;int&gt; &amp; nums,int j){
+    if(j==nums.size()-1) return;
+    int min=INT_MAX,i=j+1,minP=-1;
+    while(i&lt;nums.size()){
+        if(nums[i]&lt;min&amp;&amp;nums[i]&gt;nums[j]){    //从大于它的数中选最小的一个
+            min=nums[i];
+            minP=i;
+            show(nums);
+        }
+        i++;
+    }
+    if(minP!=-1) swap(nums[j],nums[minP]);
+    sort(nums,j+1);
+}</code></pre><p>k位后排序</p>
+<pre><code>void sort(vector&lt;int&gt;&amp; nums,int j){
+    int end=nums.size()
+    bool sorted=false;
+    while(!sorted){
+        sorted=true;
+        for(int i=j+1;i&lt;end;i++){
+            if(nums[i-1]&gt;nums[i]){
+                swap(nums[i-1],nums[i]);
+                sort=false;
+            }
+        }
+        end--;
+    }
+}</code></pre><p>如果排列是最大时，我们需要改变为最小</p>
+<pre><code>void getMin(vector&lt;int&gt;&amp; nums){
+    int i=0,j=nums.size()-1;
+    while(i&lt;j){
+        swap(nums[i],nums[j]);
+        i++;
+        j--;
+    }
+}</code></pre><p>主函数</p>
+<pre><code>void nextPermutation(vector&lt;int&gt;&amp; nums) {
+    if(nums.size()==1){
+        return; 
+    }
+    if(nums.size()==2){
+        swap(nums[0],nums[1]);
+        return;
+    }
+    int k=0;
+    if(posi(nums,k)){
+        getMin(nums);
+        return;
+    }
+    while(k&lt;=nums.size()-3){    //找到第一个有序
+        if(posi(nums,k+1)){        //k不参与比较
+            break;
+        }
+        k++;
+    }
+    getNext(nums,k);
+}</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/09/31_%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%BA%8F/" data-id="ck7kmwjsv0000aorl3q2xg6nf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">5338.二叉树的最长交错路径</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/09/31_%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%BA%8F/">31_下一个排序</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/09/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/">5338.二叉树的最长交错路径</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/09/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 smzdg<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
