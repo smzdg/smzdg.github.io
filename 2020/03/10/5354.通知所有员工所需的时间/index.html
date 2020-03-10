@@ -20,20 +20,21 @@
     var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="问题描述 给出集合[1,2,3,...,n],其所有元素共有n!种排列。按照大小顺序列出所有排列情况，并一一标记，当n&#x3D;3时，所有排列如下：  &quot;123&quot; &quot;132&quot; &quot;213&quot; &quot;231&quot; &quot;312&quot; &quot;321&quot;  给定n和k，返回第k个排列">
+  <meta name="description" content="问题描述 公司里有 n 名员工，每个员工的 ID 都是独一无二的，编号从 0 到 n - 1。公司的总负责人通过 headID 进行标识。 在 manager 数组中，每个员工都有一个直属负责人，其中 manager[i] 是第 i 名员工的直属负责人。对于总负责人，manager[headID] &#x3D; -1。题目保证从属关系可以用树结构显示。 公司总负责人想要向公司所有员工通告一条紧急消息。他将">
 <meta property="og:type" content="article">
-<meta property="og:title" content="60.第k个排序">
-<meta property="og:url" content="https://smzdg.kim/2020/03/10/60_%E7%AC%ACk%E4%B8%AA%E6%8E%92%E5%88%97/index.html">
+<meta property="og:title" content="5354.通知所有员工所需的时间">
+<meta property="og:url" content="https://smzdg.kim/2020/03/10/5354.%E9%80%9A%E7%9F%A5%E6%89%80%E6%9C%89%E5%91%98%E5%B7%A5%E6%89%80%E9%9C%80%E7%9A%84%E6%97%B6%E9%97%B4/index.html">
 <meta property="og:site_name" content="未耳的辰凡">
-<meta property="og:description" content="问题描述 给出集合[1,2,3,...,n],其所有元素共有n!种排列。按照大小顺序列出所有排列情况，并一一标记，当n&#x3D;3时，所有排列如下：  &quot;123&quot; &quot;132&quot; &quot;213&quot; &quot;231&quot; &quot;312&quot; &quot;321&quot;  给定n和k，返回第k个排列">
+<meta property="og:description" content="问题描述 公司里有 n 名员工，每个员工的 ID 都是独一无二的，编号从 0 到 n - 1。公司的总负责人通过 headID 进行标识。 在 manager 数组中，每个员工都有一个直属负责人，其中 manager[i] 是第 i 名员工的直属负责人。对于总负责人，manager[headID] &#x3D; -1。题目保证从属关系可以用树结构显示。 公司总负责人想要向公司所有员工通告一条紧急消息。他将">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-03-10T15:21:19.660Z">
-<meta property="article:modified_time" content="2020-03-10T15:28:18.909Z">
+<meta property="article:published_time" content="2020-03-10T15:12:25.518Z">
+<meta property="article:modified_time" content="2020-03-10T15:25:54.520Z">
 <meta property="article:author" content="smzdg">
-<meta property="article:tag" content="序列问题">
+<meta property="article:tag" content="dfs(深度优先遍历)">
+<meta property="article:tag" content="周赛">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://smzdg.kim/2020/03/10/60_%E7%AC%ACk%E4%B8%AA%E6%8E%92%E5%88%97/">
+<link rel="canonical" href="https://smzdg.kim/2020/03/10/5354.%E9%80%9A%E7%9F%A5%E6%89%80%E6%9C%89%E5%91%98%E5%B7%A5%E6%89%80%E9%9C%80%E7%9A%84%E6%97%B6%E9%97%B4/">
 
 
 <script id="page-configurations">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>60.第k个排序 | 未耳的辰凡</title>
+  <title>5354.通知所有员工所需的时间 | 未耳的辰凡</title>
   
 
 
@@ -160,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/03/10/60_%E7%AC%ACk%E4%B8%AA%E6%8E%92%E5%88%97/">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/03/10/5354.%E9%80%9A%E7%9F%A5%E6%89%80%E6%9C%89%E5%91%98%E5%B7%A5%E6%89%80%E9%9C%80%E7%9A%84%E6%97%B6%E9%97%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/tx2.jpg">
@@ -173,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          60.第k个排序
+          5354.通知所有员工所需的时间
         </h1>
 
         <div class="post-meta">
@@ -184,7 +185,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-10 23:21:19 / 修改时间：23:28:18" itemprop="dateCreated datePublished" datetime="2020-03-10T23:21:19+08:00">2020-03-10</time>
+              <time title="创建时间：2020-03-10 23:12:25 / 修改时间：23:25:54" itemprop="dateCreated datePublished" datetime="2020-03-10T23:12:25+08:00">2020-03-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,94 +210,46 @@
       
         <blockquote>
 <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3></blockquote>
-<p>给出集合<code>[1,2,3,...,n]</code>,其所有元素共有n!种排列。<br>按照大小顺序列出所有排列情况，并一一标记，当n=3时，所有排列如下：</p>
-<ol>
-<li><code>&quot;123&quot;</code></li>
-<li><code>&quot;132&quot;</code></li>
-<li><code>&quot;213&quot;</code></li>
-<li><code>&quot;231&quot;</code></li>
-<li><code>&quot;312&quot;</code></li>
-<li><code>&quot;321&quot;</code></li>
-</ol>
-<p>给定n和k，返回第k个排列</p>
+<p>公司里有 n 名员工，每个员工的 ID 都是独一无二的，编号从 0 到 n - 1。公司的总负责人通过 headID 进行标识。</p>
+<p>在 manager 数组中，每个员工都有一个直属负责人，其中 manager[i] 是第 i 名员工的直属负责人。对于总负责人，manager[headID] = -1。题目保证从属关系可以用树结构显示。</p>
+<p>公司总负责人想要向公司所有员工通告一条紧急消息。他将会首先通知他的直属下属们，然后由这些下属通知他们的下属，直到所有的员工都得知这条紧急消息。</p>
+<p>第 i 名员工需要 informTime[i] 分钟来通知它的所有直属下属（也就是说在 informTime[i] 分钟后，他的所有直属下属都可以开始传播这一消息）。</p>
+<p>返回通知所有员工这一紧急消息所需要的分钟数 。</p>
 <a id="more"></a>
 
 <blockquote>
 <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3></blockquote>
 <ul>
-<li>给定n的范围是[1,9]。</li>
-<li>给定k的范围是[1,n!]。</li>
+<li>1 &lt;= n &lt;= 10^5</li>
+<li>0 &lt;= headID &lt; n</li>
+<li>manager.length == n</li>
+<li>0 &lt;= manager[i] &lt; n</li>
+<li>manager[headID] == -1</li>
+<li>informTime.length == n</li>
+<li>0 &lt;= informTime[i] &lt;= 1000</li>
+<li>如果员工 i 没有下属，informTime[i] == 0 。</li>
+<li>题目 保证 所有员工都可以收到通知。</li>
 </ul>
 <blockquote>
 <h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3></blockquote>
-<pre><code>输入: n=3,k=3
-输出: &quot;213&quot;</code></pre><blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 6, headID &#x3D; 2, manager &#x3D; [2,2,-1,2,2,2], informTime &#x3D; [0,0,1,0,0,0]</span><br><span class="line">输出：1</span><br><span class="line">解释：id &#x3D; 2 的员工是公司的总负责人，也是其他所有员工的直属负责人，他需要 1 分钟来通知所有员工。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 15, headID &#x3D; 0, manager &#x3D; [-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6], informTime &#x3D; [1,1,1,1,1,1,1,0,0,0,0,0,0,0,0]</span><br><span class="line">输出：3</span><br><span class="line">解释：第一分钟总负责人通知员工 1 和 2 。</span><br><span class="line">第二分钟他们将会通知员工 3, 4, 5 和 6 。</span><br><span class="line">第三分钟他们将会通知剩下的员工。</span><br></pre></td></tr></table></figure>
+
+<blockquote>
 <h3 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h3></blockquote>
-<p><a href="https://leetcode-cn.com/problems/permutation-sequence/" target="_blank" rel="noopener">LeedCode Q60</a></p>
-<hr>
+<p><a href="https://leetcode-cn.com/problems/time-needed-to-inform-all-employees/" target="_blank" rel="noopener">LeedCode Q5354</a></p>
+<blockquote>
+<h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3></blockquote>
+<p>这是一道比赛题,我因为程序超时未能AC</p>
 <blockquote>
 <h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3></blockquote>
-<blockquote>
-<h4 id="暴力回溯"><a href="#暴力回溯" class="headerlink" title="暴力回溯"></a>暴力回溯</h4></blockquote>
-<p>对于从生成的元素中寻找所需的元素的问题，最自然而简单的就是暴力列出所有情况，再进行寻找。<br>这样的方法虽然简单，但是效率很低，在这里不详细讨论。</p>
-<blockquote>
-<h4 id="n分查找"><a href="#n分查找" class="headerlink" title="n分查找"></a>n分查找</h4></blockquote>
-<p>这里的n分查找是我自己起的名字，准确的说法是<a href="">康托展开</a>的逆过程。但我认为由二分查找衍生而来的n分查找的名字更加自然。</p>
-<p>我们注意到，n=3时的所有排列：</p>
-<ol>
-<li><code>&quot;123&quot;</code></li>
-<li><code>&quot;132&quot;</code></li>
-<li><code>&quot;213&quot;</code></li>
-<li><code>&quot;231&quot;</code></li>
-<li><code>&quot;312&quot;</code></li>
-<li><code>&quot;321&quot;</code></li>
-</ol>
-<p>从最高位开始观察，正好是从大到小排列下来。再观察次高位，正好是除去之前已经用掉过的数字外从大到小的排列。</p>
-<p>对有序数列我们可以使用二分查找，不断缩小要查找的数可能查找的范围。在这里我们可以衍生出类似的思路：</p>
-<blockquote>
-<p>先看最高位，n个数从大到小排列下来，对于其中的一个数i，以它开头的有<code>（n-1）!</code>个。所以我们可以根据k的大小确定首位数字。而对于次高位，以及更低的位，都是如此。我们不断缩小范围，最后便可以找到我们对应的排序。</p>
-</blockquote>
-<blockquote>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3></blockquote>
-<h4 id="如何找到它对应的范围"><a href="#如何找到它对应的范围" class="headerlink" title="如何找到它对应的范围"></a>如何找到它对应的范围</h4><ul>
-<li>起始情况：我们不难想到，从<code>k/((n-1)!)=i···j</code>可以得到，比k低的层有i个，k应该在第(i+1)层的j个。</li>
-<li>一般情况：以次高层为例子，我们要在已经确定的区间中继续缩小区间。此时被分为了(n-1)组，每组有(n-2)!个。因为抛弃了其他区间，所以k的值也应该缩小到j。重复上叙过程。</li>
-<li>终止情况：n==1时，此时(n-1)==0,显然无法执行<code>k/((n-1)!)=i···j</code>,因此只能执行到n==2,但在下面的代码中我们做了特殊处理，避免了这样的情况。</li>
-</ul>
-<h4 id="如何把次序转换为输出结果"><a href="#如何把次序转换为输出结果" class="headerlink" title="如何把次序转换为输出结果"></a>如何把次序转换为输出结果</h4><p>注意到我们之前得到的只是次序，如从高到低可能是 <code>2，2，1，1···</code>我们还需要把这些数字转变为输出结果。</p>
-<p>我们可以设置一个visit数组记录我们读取数据的情况。我们也可以设置一个值与下标相同的数组，每转换出了一个结果，就把这个数在数组里面删掉。后面的数便可以及时递补。</p>
-<h4 id="似乎还有一些细节没有处理"><a href="#似乎还有一些细节没有处理" class="headerlink" title="似乎还有一些细节没有处理"></a>似乎还有一些细节没有处理</h4><p>当我们按照上面步骤完成程序后，却会发现程序并不能得到正确的结果。仔细分析后我们会发现余数可能是0，如(n-1)!=6,而我们的k等于12时，i等于2，j等于0 ，此时k会被分到第3组，但是k显然应该是和7到11分到第2组(1到6是第一组)。</p>
-<p>在这里有个简单的解决方案，在初始时把k减掉1，这时候我们就可以把余数为0的情况纳入到正确的组中。</p>
-<blockquote>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3></blockquote>
-<pre><code>class Solution {
-public:
-    string getPermutation(int n, int k) {
-        string s=&quot;&quot;;
-        int fac=1;  
-        for(int i=1;i&lt;=n;i++){
-            fac*=i;
-        }
-        vector&lt;int&gt; res(n+1,0);
-        for(int i=1;i&lt;=n;i++){    //得到n!
-            res[i]=i;
-        }
-        k--;    //避免处理余0不在同一种的情况
-        while(n&gt;=1){ 
-            fac/=n;        //fac=(n-1)!,但n==1时,fac==1;
-            s+=&apos;0&apos;+res[k/fac+1];    //插入对应的数
-            res.erase(res.begin()+k/fac+1);//移除已经插入的数
-            k%=fac;
-            n--;
-        }
-        return s;
-    }
-};</code></pre><blockquote>
-<h3 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h3></blockquote>
-<ul>
-<li>时间复杂度 O(n);</li>
-<li>空间复杂度 O(n);</li>
-</ul>
+<p>这道题属于树的最短路径问题</p>
+<p>利用dfs直接遍历即可</p>
+<p>一个优化的点在于将manager数组转化为更好效率更高的结构.<br>在这里我们使用一个二维数组存储每位负责人的下属员工.可以减少遍历</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int maxTime;</span><br><span class="line">    int numOfMinutes(int n, int headID, vector&lt;int&gt;&amp; manager, vector&lt;int&gt;&amp; informTime) &#123;</span><br><span class="line">        maxTime&#x3D;-1;</span><br><span class="line">        vector&lt;vector&lt;int&gt;&gt; xs(manager.size());</span><br><span class="line">        for(int i&#x3D;0;i&lt;manager.size();i++)&#123;</span><br><span class="line">            if(manager[i]&#x3D;&#x3D;-1) continue;</span><br><span class="line">            xs[manager[i]].push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        dfs(informTime,xs,headID,0);</span><br><span class="line">        return maxTime;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void dfs(vector&lt;int&gt; informTime,vector&lt;vector&lt;int&gt;&gt; xs,int id,int time)&#123;</span><br><span class="line">        if(informTime[id]&#x3D;&#x3D;0)&#123;</span><br><span class="line">            if(time&gt;maxTime)&#123;</span><br><span class="line">                maxTime&#x3D;time;</span><br><span class="line">            &#125;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;0;i&lt;xs[id].size();i++)&#123;</span><br><span class="line">            dfs(informTime,xs,xs[id][i],time+informTime[id]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
 
     </div>
 
@@ -306,7 +259,8 @@ public:
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%BA%8F%E5%88%97%E9%97%AE%E9%A2%98/" rel="tag"># 序列问题</a>
+              <a href="/tags/dfs-%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E9%81%8D%E5%8E%86/" rel="tag"># dfs(深度优先遍历)</a>
+              <a href="/tags/%E5%91%A8%E8%B5%9B/" rel="tag"># 周赛</a>
           </div>
 
         
@@ -315,10 +269,13 @@ public:
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/10/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="prev" title="二分查找">
-      <i class="fa fa-chevron-left"></i> 二分查找
+    <a href="/2020/03/10/5338.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E9%95%BF%E4%BA%A4%E9%94%99%E8%B7%AF%E5%BE%84/" rel="prev" title="5338.二叉树的最长交错路径">
+      <i class="fa fa-chevron-left"></i> 5338.二叉树的最长交错路径
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="next" title="二分查找">
+      二分查找 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -378,7 +335,7 @@ public:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#来源"><span class="nav-number">4.</span> <span class="nav-text">来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析"><span class="nav-number">5.</span> <span class="nav-text">问题分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力回溯"><span class="nav-number">5.1.</span> <span class="nav-text">暴力回溯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n分查找"><span class="nav-number">5.2.</span> <span class="nav-text">n分查找</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">6.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何找到它对应的范围"><span class="nav-number">6.1.</span> <span class="nav-text">如何找到它对应的范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何把次序转换为输出结果"><span class="nav-number">6.2.</span> <span class="nav-text">如何把次序转换为输出结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#似乎还有一些细节没有处理"><span class="nav-number">6.3.</span> <span class="nav-text">似乎还有一些细节没有处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">7.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂度"><span class="nav-number">8.</span> <span class="nav-text">复杂度</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#来源"><span class="nav-number">4.</span> <span class="nav-text">来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评论"><span class="nav-number">5.</span> <span class="nav-text">评论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题分析"><span class="nav-number">6.</span> <span class="nav-text">问题分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">6.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

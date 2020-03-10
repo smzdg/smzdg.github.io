@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="几乎所有讲二分查找的文章，都会引用Knuth这样的一句话 Although the basic idea of binary search is comparatively straightforward,  the details can be surprisingly tricky..通俗简单的翻译一下就是 思路很简单，细节是魔鬼 。相信很多人都被二分查找里要不要加等号搞的头晕眼花。看了正确答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分查找">
+<meta property="og:url" content="https://smzdg.kim/2020/03/10/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="几乎所有讲二分查找的文章，都会引用Knuth这样的一句话 Although the basic idea of binary search is comparatively straightforward,  the details can be surprisingly tricky..通俗简单的翻译一下就是 思路很简单，细节是魔鬼 。相信很多人都被二分查找里要不要加等号搞的头晕眼花。看了正确答">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-10T15:12:35.815Z">
+<meta property="article:modified_time" content="2020-03-10T15:25:58.813Z">
+<meta property="article:author" content="smzdg">
+<meta property="article:tag" content="二分查找">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/2020/03/10/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>二分查找 | 未耳的辰凡</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/03/10/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tx2.jpg">
+      <meta itemprop="name" content="smzdg">
+      <meta itemprop="description" content="理性和感性是硬币的两面">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="未耳的辰凡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二分查找
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-10 23:12:35 / 修改时间：23:25:58" itemprop="dateCreated datePublished" datetime="2020-03-10T23:12:35+08:00">2020-03-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E6%96%B9%E6%B3%95%E4%B8%8E%E6%80%9D%E6%83%B3/" itemprop="url" rel="index"><span itemprop="name">算法方法与思想</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>几乎所有讲二分查找的文章，都会引用Knuth这样的一句话</p>
+<pre><code>Although the basic idea of binary search is comparatively straightforward, 
+the details can be surprisingly tricky..</code></pre><p>通俗简单的翻译一下就是 <strong>思路很简单，细节是魔鬼</strong> 。相信很多人都被二分查找里要不要加等号搞的头晕眼花。<br>看了正确答案后又恍然大悟，到了下次做题却又忘掉了某处细节而陷入泥潭···</p>
+<p>这篇文章的目的就是带你彻底搞懂二分查找的 <strong>代码</strong> 里的原理是如何来的(不是二分查找自身的原理)，而不再是局限是对二分查找死记硬背。<br>只要搞懂了原理，再写二分查找自然便是手到擒来。</p>
+<a id="more"></a>
+
+<blockquote>
+<h3 id="0-一些基本参数的含义"><a href="#0-一些基本参数的含义" class="headerlink" title="0.一些基本参数的含义"></a>0.一些基本参数的含义</h3></blockquote>
+<ul>
+<li>left 左边界</li>
+<li>right 右边界</li>
+<li>mid 当前检查点</li>
+</ul>
+<blockquote>
+<h3 id="1-二分查找最最最最基本的模板"><a href="#1-二分查找最最最最基本的模板" class="headerlink" title="1.二分查找最最最最基本的模板"></a>1.二分查找最最最最基本的模板</h3></blockquote>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=?,right=?;
+    while(left??right){
+        int mid=(left+right+??)/2;
+        if(nums[mid]==target){
+            ?????;
+        }else if(nums[mid]&lt;target){
+            left=mid+?;
+        }else if(nums[mid]&gt;target){
+            right=mid+?;
+        }
+    }
+    return ?;
+}</code></pre><p>在上面的模板中，两处<code>??</code>是可以改变的，而他们的改变便会影响到<code>?</code>该填的内容。<br>空缺的<code>?????</code>则和我们使用二分查找要解决的问题有关。</p>
+<blockquote>
+<h3 id="2-二分查找能解决的三种问题"><a href="#2-二分查找能解决的三种问题" class="headerlink" title="2.二分查找能解决的三种问题"></a>2.二分查找能解决的三种问题</h3></blockquote>
+<p>学过二分查找的人都知道，二分查找是用来找某个数在有序数组中的位置的。这是二分查找能够解决的最基本的问题。</p>
+<p>但是，如果要查找的那个数在这个数组中可能不止一个而是多个呢？这个时候的要求可能就不是随便找一个就了事了，<br>而是要你来找出这个数字所在位置比较特殊的两个————最左边的和最右边的，也就是寻找左边界和右边界。<br>这两种问题只需要在第一种问题的基础上做少许改动便可以用二分查找来解决。</p>
+<blockquote>
+<h3 id="3-假如有一名小白···"><a href="#3-假如有一名小白···" class="headerlink" title="3.假如有一名小白···"></a>3.假如有一名小白···</h3></blockquote>
+<p>对于一名刚刚了解了二分查找算法，想要把它转换为代码的小白，我相信他肯定会一边感叹二分查找算法的简单，<br>一边自信的写出下面的片段</p>
+<pre><code>if(nums[mid]&lt;target){
+    left=mid;
+}else if(nums[mid]&gt;target){
+    right=mid;
+}</code></pre><p>但他写好代码，自信的点下运行。或许有的情况可以给出正确的答案，但可能更多的是莫名其妙的死循环。</p>
+<p>然后他眉头一皱，改了改代码，运行，错误，然后抓耳挠腮，再改······</p>
+<p>到底发生了什么让我们的小白写不出明明很简单的二分查找呢。我们先来看看上面模板中<code>??</code>的部分。</p>
+<blockquote>
+<h3 id="3-mid-left-right-2和mid-left-right-1-2"><a href="#3-mid-left-right-2和mid-left-right-1-2" class="headerlink" title="3.mid=(left+right)/2和mid=(left+right+1)/2"></a>3.mid=(left+right)/2和mid=(left+right+1)/2</h3></blockquote>
+<p>由简单的算术知识我们可以知道，在<code>left+right</code>为偶数时，这两个算式得到的结果是一样的。<br>而在<code>left+right</code>是奇数时，前者是向下取整，后者是向上取整。</p>
+<p>在这里我们要了解一个基本事实：无论是用哪个算式，在二分查找中，除了只有一个数和提前return命中的情况(只有第一种问题的情况才能提前命中)，不断使用二分查找<br>必然会到<code>left=n,right=n+1</code>的情况。可以自己在纸上写一写试一试。在后面我们会把这种情况写作<code>n\n+1</code> 。</p>
+<p>那么也就是说：在使用<code>mid=(left+right)/2</code>时算到了<code>left=n,right=n+1</code>,此时<code>mid=(n+n)/2=n</code>,如果下一步是<code>left=mid</code>,<br>我们就会发现我们不幸的陷入了死循环。</p>
+<p>而在<code>mid=(left+right+1)/2</code>时算到了<code>left=n,right=n+1</code>,此时<code>mid=(n+n+1)/2=n+1</code>,如果下一步是<code>right=mid</code>,<br>我们也会不幸的陷入死循环。</p>
+<blockquote>
+<h3 id="4-while-left-lt-right-和while-left-lt-right"><a href="#4-while-left-lt-right-和while-left-lt-right" class="headerlink" title="4.while(left&lt;right)和while(left&lt;=right)"></a>4.while(left&lt;right)和while(left&lt;=right)</h3></blockquote>
+<p>如果你侥幸的逃脱了上面陷阱，来到了<code>left==right</code>的情况。要是你在之前足够幸运，选择了前一种判断条件，那么恭喜你，起码你不会被困在死循环了。</p>
+<p>就算你选择了后一种，如果之前选择是<code>mid=(left+right+1)/2</code>，那么只要再运算你依然可以摆脱这该死的循环。</p>
+<p>但是···如果你偏偏做了最差的选择，那又是无穷无尽的死循环···</p>
+<p>while循环中的内容还有个重要的作用，那就是它确定了我们循环停止的条件。对于<code>while(left&lt;right)</code>，退出循环时我们有<code>left==right</code> ，<br>而对于<code>while(left&lt;=right)</code>,退出循环时我们有<code>left-1=right</code>。这里必须要切记，这对我们后面的分析很有用。</p>
+<blockquote>
+<h3 id="5-解决死循环"><a href="#5-解决死循环" class="headerlink" title="5.解决死循环"></a>5.解决死循环</h3></blockquote>
+<p>我们相信多一事不如少一事，所以我们选择形式相比来说最简单的<code>mid=(left+right)/2</code>和<code>while(left&lt;right)</code>搭配，解决最简单的第一个问题。</p>
+<p>如果提前命中返回的情况没什么好说了，我们现在关注的情况应该是必须到到最后才能得到答案的情况，也就是说我们将要面对<code>n/n+1</code>这个该死的情况。</p>
+<p>怎么解决呢？最后，我们把目光放到了这段代码上</p>
+<pre><code>if(nums[mid]&lt;target){
+    left=mid;
+}else if(nums[mid]&gt;target){
+    right=mid;
+}</code></pre><p>我们不是可能会卡在<code>left=mid</code>这段代码上吗？那么我们写成<code>left=mid+1</code>呗。</p>
+<p>于是我们得到了下面这段代码(假设我们要找的数一定存在)</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size()-1;
+    while(left&lt;right){
+        int mid=(left+right)/2;
+        if(nums[mid]==target){
+            return mid;
+        }else if(nums[mid]&lt;target){
+            left=mid+1;
+        }else if(nums[mid]&gt;target){
+            right=mid;
+        }
+    }
+    return left;
+}</code></pre><p>再运行，好像就行了。但是它没有办法处理寻找的数不存在的情况。但解决方法也很简单，在最后再多加一个判断，判断nums[right]是不是我们要找的数就行了。</p>
+<p>现在我们来解决寻找左边界的问题。</p>
+<p>寻找左边界，意味着我们要把右边这样的数视为”不是这个数”。所以命中这个数后我们不能立即返回，那么我们该干什么呢？<br>命中时左边界应该是在左边或者是本身，所以我们就可以让右界的right等于这个位置来继续寻找。也就是：</p>
+<pre><code>if(nums[mid]==target){
+    right=mid;
+}</code></pre><p>得到代码：</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size()-1;
+    while(left&lt;right){
+        int mid=(left+right)/2;
+        if(nums[mid]==target){
+            right=mid;
+        }else if(nums[mid]&lt;target){
+            left=mid+1;
+        }else if(nums[mid]&gt;target){
+            right=mid;
+        }
+    }
+    return left;
+}</code></pre><p>这段代码也是可行的，我们似乎势如破竹，一下子就来到了最后一个问题，寻找右边界。<br>按照上面的思路对代码做一些小小的修改，把<code>right=mid</code>替换为<code>left=mid+1</code>,攻破二分查找似乎近在眼前。</p>
+<p>但是一个问题的出现阻止了我们前进的脚步：如果mid直接命中右边界，我们却不幸的执行了<code>left=mid+1</code>,直接把右边界跳了过去。</p>
+<p>前面的代码为什么没有出现这样的问题？因为寻找的是左边界，而相等时移动的是右界right，小于target时移动的是左界left，所以左边界肯定逃不出我们的手掌心。</p>
+<p>冷静下来仔细思考后，我们发现有挽回的余地：left最多只能到右边界再右边一个，再仔细思考我们会意识到，left肯定会到右边界的右边一个。</p>
+<p>因为left到了由和target相等的数组成的”平台”后，会在这个平台上逐渐(当然也可能马上)滑到最右边。但不可能没有到平台最右边就直接出平台，因为平台右边的数都是大于target的。</p>
+<p>mid到了右边界后，执行left+1，到了右边界下一个。有了这个强有力的结论，我们只需要把返回条件改成 <code>return left-1</code>就可以了。</p>
+<p>问题解决了吗？大多数情况下是的。但是，右边界是数组里的最后一个数呢？我们的left能到达数组里最后一个数，然后在<code>return left-1</code>中遗憾的错失了右边界。<br>这或许是爱情故事的好题材，但我们显然不想让代码中有这样的悲剧。</p>
+<p>怎么办呢？思考后我们会发现right是我们的悲剧的罪魁祸首：因为right的限制，让left不能到右边界的下一个。那么我们就直接解决它，让right的初值多1 ，取到nums.size()。</p>
+<p>得到代码</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size();
+    while(left&lt;right){
+        int mid=(left+right)/2;
+        if(nums[mid]==target){
+            left=mid+1;
+        }else if(nums[mid]&lt;target){
+            left=mid+1;
+        }else if(nums[mid]&gt;target){
+            right=mid;
+        }
+    }
+    return left-1;
+}</code></pre><p>为什么把right的初值赋到数组之外却不会出现错误呢？我们之前提前，结束循环时<code>left==right</code>，也就是说我们可以把return的内容写成<code>return right-1</code>，就算right没有向左移动，也不会返回它出界的原值。</p>
+<p>我们写出了三种情况对应的解法了。这时我们来总结一下经验：</p>
+<ul>
+<li>如果出现死循环，我们就把被卡的left或right在循环内的移动加1或减1，即把 “left=mid”改为”left=mid+1”或把”right=mid”改为”right=mid-1”</li>
+<li>如果是要找边界，把nums[mid]==target里面的内容改变一下</li>
+<li>如果遇到了把边界排除掉了的情况，只需要在return处处理一下</li>
+<li>如果因为数组边界而酿成悲剧，就把初始的左界left或右界right扩大一些</li>
+</ul>
+<p>按照这些经验，我们来试试<code>mid=(left+right+1)/2</code>和<code>while(left&lt;right)</code>的组合</p>
+<blockquote>
+<h3 id="6-尝试新组合"><a href="#6-尝试新组合" class="headerlink" title="6.尝试新组合"></a>6.尝试新组合</h3></blockquote>
+<p>现在试试第一种问题，单纯的寻找一个数。显然我们只需要考虑第一条经验。如何运用这条经验呢？我们只需直接考虑<code>n\n+1</code>的情况。</p>
+<p>根据第3节的经验，我们可能会卡右界right，那么按照经验改，可以得到代码</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size()-1;
+    while(left&lt;right){
+        int mid=(left+right+1)/2;
+        if(nums[mid]==target){
+            return mid;
+        }else if(nums[mid]&lt;target){
+            left=mid;
+        }else if(nums[mid]&gt;target){
+            right=mid-1;
+        }
+    }
+    return left;
+}</code></pre><p>和前面一样，如果数字不在数组内我们需要多做一个if判断</p>
+<p>再寻找左界。这时我们发现边界可能会被漏掉，同时利用3，4点经验改变一下代码，可以得到：</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=-1,right=nums.size()-1;    //left边界修改
+    while(left&lt;right){
+        int mid=(left+right+1)/2;
+        if(nums[mid]==target){
+            right=mid-1;
+        }else if(nums[mid]&lt;target){
+            left=mid;
+        }else if(nums[mid]&gt;target){
+            right=mid-1;
+        }
+    }
+    return left+1;        //回到边界
+}</code></pre><p>最后是右界。我们只需要第2点经验就可以了，代码：</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size()-1;    
+    while(left&lt;right){
+        int mid=(left+right+1)/2;
+        if(nums[mid]==target){
+            right=mid-1;
+        }else if(nums[mid]&lt;target){
+            left=mid;
+        }else if(nums[mid]&gt;target){
+            right=mid-1;
+        }
+    }
+    return left;        
+}</code></pre><p>依靠四点经验，我们很迅速的就完成了这种情况的写法！</p>
+<blockquote>
+<h3 id="7-更简便的寻找一个数"><a href="#7-更简便的寻找一个数" class="headerlink" title="7.更简便的寻找一个数"></a>7.更简便的寻找一个数</h3></blockquote>
+<p>前面我们解决第一类问题，寻找一个数时都不得不在最后再加上一个判断才能避免target不在数组中的尴尬。<br>其原因在于<code>left==right</code>时已经结束了循环，没有对最后那个值做出判断。顺便提一句，后面的寻找边界的代码也没有处理这个问题。</p>
+<p>那么有没有可以不用加判断的方法呢，当然，只要我们把while条件改为left&lt;=right,两者相等时便会继续进入循环。</p>
+<p>同样的，按照经验和第4节的分析，我们如果使用<code>mid=(left+right)/2</code>和<code>while(left&lt;=right)</code>的组合。<br>左右界left和right都会被卡，所以我们把它们都处理一下，可以得到代码。</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=0,right=nums.size()-1;
+    while(left&lt;=right){
+        int mid=(left+right)/2;
+        if(nums[mid]==target){
+            return mid;
+        }else if(nums[mid]&lt;target){
+            left=mid+1;
+        }else if(nums[mid]&gt;target){
+            right=mid-1;
+        }
+    }
+    return -1;
+}</code></pre><p>这里的巧妙之处就在于循环会检查所有可能的数，而如果出了循环必然target在数组中不存在。</p>
+<blockquote>
+<h3 id="8-继续使用我们的经验"><a href="#8-继续使用我们的经验" class="headerlink" title="8.继续使用我们的经验"></a>8.继续使用我们的经验</h3></blockquote>
+<p>原本到此就应该结束了，剩下的情况相信大家都可以自行推导。但是因为前面还有一个易错点，所以我们对二分查找的攻克还没有结束。</p>
+<p>继续考虑7中我们使用的组合。如果我们依靠这个组合来解决右边界呢。此时左右界left和right都做了改变，那么3,4点经验我们要怎么运用呢？</p>
+<p>答案是不需要运用，因为此时最后根本就不会出界：left会滑到平台右侧，然后到右边界加1的位置，随后left肯定不会再有任何的移动，直到right等于left。<br>这时mid是大于target，我们直接返回right就可以了。</p>
+<p>对于左边界也是如此，直接返回left。</p>
+<p>这时候我们也注意到我们不能随便选择返回值了，因为left和right不再相等。</p>
+<blockquote>
+<h3 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a>9.总结</h3></blockquote>
+<p>现在我们回到那个最开始的最最最最基本的模板，相信现在我们已经对其中的<code>?</code>怎么取已经了解了。如果还不熟悉可以看看下面的总结</p>
+<pre><code>int binary_search(vector&lt;int&gt; nums,int target){
+    if(nums.size()==0) return -1;
+    int left=?,right=?;        //经验4，如果因为数组边界限制需要扩大
+    while(left??right){        //自选 &quot;&lt;&quot;或&quot;&lt;=&quot;
+        int mid=(left+right+??)/2;        //自选 取0或1
+        if(nums[mid]==target){
+            ?????;                //经验2，根据是不是边界问题选择
+        }else if(nums[mid]&lt;target){
+            left=mid+?;            //经验1，避免死循环
+        }else if(nums[mid]&gt;target){
+            right=mid+?;        //经验1，避免死循环
+        }
+    }
+    return ?;    //经验3，挽救我们失去的边界。如果while里是&lt;=则需要注意返回的是哪一个
+}</code></pre><blockquote>
+<h3 id="10-换种思路思考"><a href="#10-换种思路思考" class="headerlink" title="10.换种思路思考"></a>10.换种思路思考</h3></blockquote>
+<p>我们从细节推出了二分查找的写法，但我们能不能从整体来分析二分查找呢？也能！而且在掌握了整体的思维后你能对二分查找的了解更上一层。</p>
+<p>我们可以把二分查找看作一个这样的过程：有一个集合区间，我们把区间不断缩小来寻找目标。</p>
+<p>区间可能是全闭的，那么只要左右界相等即命中；可能是半开半闭的，左右边界相等时目标在加1或者减1的位置。</p>
+<p>什么！目标值在加1或减1的位置，听起来好熟悉！这不就是经验3吗！为什么它会和经验3如此的相似？</p>
+<p>为了找出原因，我们回顾一下要使用经验3的原因：”为了避免死循环我们在经验1中做了多加1或多减1的操作”，以及使用它的后果：”还要考虑经验4，把边界扩大”。</p>
+<p>等等！敏感的你可能已经发现了他们的联系：经验4扩大单边区间，对应的是半开半闭区间，使用经验3是说明我们在进行这样的操作：<br>把闭区间向前推，因为检验过的值显然不是我们需要的答案，而开区间不需要。</p>
+<p>而我们继续把目光放大可以发现：当我们取<code>while(left&lt;right)</code>时意味着我们在使用一个半开半闭区间，而使用 <code>while(left&lt;=right)</code>时意味着我们在使用一个全闭的区间。</p>
+<p>这也可以很好的解释为什么第7节我们可以不用判断。毕竟一个闭区间的左右界都在同一个数，那么肯定就是了，如果他们左区间直接大于右区间了还没找到答案，那么说明目标不存在。</p>
+<p>至于<code>mid=(left+right)/2</code>和<code>mid=(left+right+1)/2</code>?其实两个在宏观上并没有什么区别，我甚至觉得写二分查找改变不要考虑写成<code>mid=(left+right+1)</code>。</p>
+<blockquote>
+<h3 id="11-一个小细节"><a href="#11-一个小细节" class="headerlink" title="11.一个小细节"></a>11.一个小细节</h3></blockquote>
+<p>为什么最后才提这个细节，是因为这个细节在绝大多数的情况下不需要考虑(但是在LeedCode里你可能会经常碰到这个问题)，我经常觉得这种因为计算机或语言而造成错误破坏了算法的最纯洁的美感(其实是懒的改代码了hhh)。<br>我们如果数非常非常多，那么我们在第一次做<code>left+right</code>时可能会溢出，所以我们可以使用<code>left+(right-left)/2</code>来替代<code>(left+right)/2</code>。</p>
+<blockquote>
+<h3 id="12-最后"><a href="#12-最后" class="headerlink" title="12.最后"></a>12.最后</h3></blockquote>
+<p>相信看到这里，就算是前文提到的小白也已经对二分查找了如指掌了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="tag"># 二分查找</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/10/5354.%E9%80%9A%E7%9F%A5%E6%89%80%E6%9C%89%E5%91%98%E5%B7%A5%E6%89%80%E9%9C%80%E7%9A%84%E6%97%B6%E9%97%B4/" rel="prev" title="5354.通知所有员工所需的时间">
+      <i class="fa fa-chevron-left"></i> 5354.通知所有员工所需的时间
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/60_%E7%AC%ACk%E4%B8%AA%E6%8E%92%E5%88%97/" rel="next" title="60.第k个排序">
+      60.第k个排序 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-一些基本参数的含义"><span class="nav-number">1.</span> <span class="nav-text">0.一些基本参数的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-二分查找最最最最基本的模板"><span class="nav-number">2.</span> <span class="nav-text">1.二分查找最最最最基本的模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-二分查找能解决的三种问题"><span class="nav-number">3.</span> <span class="nav-text">2.二分查找能解决的三种问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-假如有一名小白···"><span class="nav-number">4.</span> <span class="nav-text">3.假如有一名小白···</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-mid-left-right-2和mid-left-right-1-2"><span class="nav-number">5.</span> <span class="nav-text">3.mid&#x3D;(left+right)&#x2F;2和mid&#x3D;(left+right+1)&#x2F;2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-while-left-lt-right-和while-left-lt-right"><span class="nav-number">6.</span> <span class="nav-text">4.while(left&lt;right)和while(left&lt;&#x3D;right)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-解决死循环"><span class="nav-number">7.</span> <span class="nav-text">5.解决死循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-尝试新组合"><span class="nav-number">8.</span> <span class="nav-text">6.尝试新组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-更简便的寻找一个数"><span class="nav-number">9.</span> <span class="nav-text">7.更简便的寻找一个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-继续使用我们的经验"><span class="nav-number">10.</span> <span class="nav-text">8.继续使用我们的经验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-总结"><span class="nav-number">11.</span> <span class="nav-text">9.总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-换种思路思考"><span class="nav-number">12.</span> <span class="nav-text">10.换种思路思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-一个小细节"><span class="nav-number">13.</span> <span class="nav-text">11.一个小细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-最后"><span class="nav-number">14.</span> <span class="nav-text">12.最后</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
