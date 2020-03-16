@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0.世界幕后的设计者 如果让我选出最伟大的数据结构,我一定会选择树.我难以用语言来形容当我认识到树无处不在时的震惊之情. 对初学树的人来说,树是那么的奇怪.非线性的结构,奇奇怪怪的遍历…比起从学习编程语言的时候就开始使用的线性机构的数组,栈,队列.树实在是一个陌生来客.毕竟在数组中只需要一个for循环就能完成的遍历,在树里居然还要专门写一个遍历函数.更要命的是,编程语言中似乎没有自带树这样结构,">
+<meta property="og:type" content="website">
+<meta property="og:title" content="树 (基础知识)">
+<meta property="og:url" content="https://smzdg.kim/%E6%9C%AA%E5%AE%8C%E6%88%90/%E6%A0%91.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="0.世界幕后的设计者 如果让我选出最伟大的数据结构,我一定会选择树.我难以用语言来形容当我认识到树无处不在时的震惊之情. 对初学树的人来说,树是那么的奇怪.非线性的结构,奇奇怪怪的遍历…比起从学习编程语言的时候就开始使用的线性机构的数组,栈,队列.树实在是一个陌生来客.毕竟在数组中只需要一个for循环就能完成的遍历,在树里居然还要专门写一个遍历函数.更要命的是,编程语言中似乎没有自带树这样结构,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-16T02:22:24.162Z">
+<meta property="article:modified_time" content="2020-03-14T15:30:54.311Z">
+<meta property="article:author" content="smzdg">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/%E6%9C%AA%E5%AE%8C%E6%88%90/%E6%A0%91">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false
+  };
+</script>
+
+  <title>树 (基础知识) | 未耳的辰凡
+  </title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">树 (基础知识)
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <blockquote>
+<h3 id="0-世界幕后的设计者"><a href="#0-世界幕后的设计者" class="headerlink" title="0.世界幕后的设计者"></a>0.世界幕后的设计者</h3></blockquote>
+<p>如果让我选出最伟大的数据结构,我一定会选择树.我难以用语言来形容当我认识到树无处不在时的震惊之情.</p>
+<p>对初学树的人来说,树是那么的奇怪.非线性的结构,奇奇怪怪的遍历…比起从学习编程语言的时候就开始使用的线性机构的数组,栈,队列.树实在是一个陌生来客.毕竟在数组中只需要一个for循环就能完成的遍历,在树里居然还要专门写一个遍历函数.更要命的是,编程语言中似乎没有自带树这样结构,难道全部都要我们自己来写吗.</p>
+<p>如果你因为这样想而错过了树,我不得不说你错过了洞察世界运行的一个绝妙窗口.但是,你现在有挽回的机会了,让我们来人生一下这位伟大的世界幕后设计者吧.</p>
+<blockquote>
+<h3 id="1-下棋"><a href="#1-下棋" class="headerlink" title="1.下棋"></a>1.下棋</h3></blockquote>
+<p>从下棋开始讲树似乎有点怪怪的,不过我觉得这是一个绝好的入门例子.</p>
+<p>假如你在和别人对弈,现在轮到你下,你将要如何选出你的下一步？先快速扫一眼棋盘,大概确定有哪些子可以下.然后你开始假设这步棋我下了之后,对手会如何应对.如果你的水平很高,可能会想对手应了这步棋后,我又可以怎么样下…一直这样深入.据说职业棋手可以想到10步之后!</p>
+<p>在这个过程中,你可能对树一无可知,但是你已经构造出了一棵树：我们把棋盘的当前状态看作一个起点,在树里称为”根”.然后你想到了几种可能的下法,它都会形成一个新的局面,这意味着我们向前前进了一步,对于新的各种情况,在树中称做”孩子”.而对于各个孩子,对手有不同的应着,形成的新局面又成了新的孩子…</p>
+<p>象棋开局时形成的一棵树</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">		起始状态</span><br><span class="line">	   &#x2F;       \</span><br><span class="line">	炮二平五   相三进五</span><br><span class="line">    &#x2F;   \      &#x2F;   \</span><br><span class="line">马2进3 炮2平5 炮2平5 炮2平4</span><br><span class="line"></span><br><span class="line">		...   ....</span><br></pre></td></tr></table></figure>
+
+<p>我们常用上面的树状图来使树的结构可视化</p>
+<p>对于树,我们不需要去了解太多它在数学中的定义.只需要记住一点：树的结构是无环的.也就是说在树的结构里走,只要不掉头,是不可能回去的.</p>
+<blockquote>
+<h3 id="2-二叉树"><a href="#2-二叉树" class="headerlink" title="2.二叉树"></a>2.二叉树</h3></blockquote>
+<p>二叉树是树最简单的结构,也是我们学习树的最好例子.</p>
+<p>上一节给出的象棋开局图就是一颗二叉树.对于每一种棋面形成的情况,我们称其为”节点”.在二叉树中,每个节点可以形成两种新的情况,我们将其称为孩子.其中,在左边的我们称为左孩子,右边的称为右孩子.而对于孩子节点来说,上一步就是它的”父亲”或”父亲节点”.</p>
+<p>对于每一棵二叉树,都会有一个唯一的起点,我们称其为”根”或”根节点”.</p>
+<p>如果我们把根节点去掉,我们会发现整个树便变成了两颗树,一颗是左孩子作为根节点,另一颗是右孩子作为根节点.对于这两颗树,我们可以称为原根节点的左子树和右子树.我们可以把这个概念延伸开.对于根节点的左孩子,它的左右两边也各有一颗左右子树…</p>
+<p>注意左右子树的概念.这为我们提供了完美的递归模型：我们把树分成三个部分看待,根节点,左子树,右子树.根据它们的关系设计算法.然后左右子树又是一颗新树,我们也把它拆成三个部分…直到左右子树为空.</p>
+<blockquote>
+<h3 id="3-二叉树的应用：一个人工智能程序"><a href="#3-二叉树的应用：一个人工智能程序" class="headerlink" title="3.二叉树的应用：一个人工智能程序"></a>3.二叉树的应用：一个人工智能程序</h3></blockquote>
+<p>应用似乎都是被写在介绍的最后,但我认为这并不好.这就像让人走在痛苦的沙漠中,直到最后才出现绿洲一样.</p>
+<p>我要介绍的人工智能程序是我写过的第一个人工智能程序.它处理的是这样一个问题：有一些不同形状的箱子被随意堆放,现在我们选择两个箱子,程序便自动操作把一个箱子放到另外一个的上面.</p>
+<p>这一切似乎听起来非常简单：只需要把它们上面的箱子清空,然后移上去就可以了.确实,这一点都不智能,这个程序真正智能的一点在于它能够回答为什么要把XX移开的原因.</p>
+<p>比如说,某个箱子在我们要移动的箱子上面,程序会把它移开.事后,你问它：”为什么你要把那个箱子移开？”它会告诉你,”因为我需要移动下面那个箱子.”</p>
+<p>这是不是听起来非常神奇,它不再是那个只会傻傻做事的程序了,它有了自己的思考能力,能够明白自己要做什么了!</p>
+<p>让我们来看看这是怎么样实现的吧：在移动箱子前,我们需要把它们上面的箱子全部移开.这个问题可以递归的看待：因为要移动A箱,我们需要把上面的B箱和C箱移开,因为要移动B箱,我们把上面的D箱移开…</p>
+<p>注意到了吗,我们在这里实现了一棵树!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">		移动A箱&#x2F;清空A箱上部</span><br><span class="line">		   &#x2F;       \</span><br><span class="line">	B箱在A箱上    C箱在A箱上</span><br><span class="line">		|			 |</span><br><span class="line">	移动B箱		  移动C箱</span><br><span class="line">	&#x2F;      \		...</span><br><span class="line">D箱在A箱上  ...</span><br><span class="line">	|</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+
+<p>被问到”为什么要移动X箱时”,程序只需要在这颗树中找到移动X箱的步骤,然后访问它的父亲节点,它就可以知道原因了.如被问到为什么要移动B箱,它看到父亲节点是”移动A箱”,它便会回答：”因为我要移动A箱.”什么,你问它为什么要移动A箱？它会发现没有父亲节点,然后有些不解的回答你：”不是你要我这么做的吗.”</p>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-世界幕后的设计者"><span class="nav-number">1.</span> <span class="nav-text">0.世界幕后的设计者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-下棋"><span class="nav-number">2.</span> <span class="nav-text">1.下棋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-二叉树"><span class="nav-number">3.</span> <span class="nav-text">2.二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-二叉树的应用：一个人工智能程序"><span class="nav-number">4.</span> <span class="nav-text">3.二叉树的应用：一个人工智能程序</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
