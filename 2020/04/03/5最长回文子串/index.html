@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="问题描述 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.最长回文子串">
+<meta property="og:url" content="https://smzdg.kim/2020/04/03/5%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="问题描述 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-03T03:55:15.884Z">
+<meta property="article:modified_time" content="2020-04-03T04:35:57.467Z">
+<meta property="article:author" content="smzdg">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="字符串">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/2020/04/03/5%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>5.最长回文子串 | 未耳的辰凡</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/04/03/5%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tx2.jpg">
+      <meta itemprop="name" content="smzdg">
+      <meta itemprop="description" content="理性和感性是硬币的两面">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="未耳的辰凡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5.最长回文子串
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-03 11:55:15 / 修改时间：12:35:57" itemprop="dateCreated datePublished" datetime="2020-04-03T11:55:15+08:00">2020-04-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeedCode/" itemprop="url" rel="index"><span itemprop="name">LeedCode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3></blockquote>
+<p>给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。</p>
+<a id="more"></a>
+
+<blockquote>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3></blockquote>
+<h5 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h5><pre><code>输入: &quot;babad&quot;
+输出: &quot;bab&quot;
+注意: &quot;aba&quot; 也是一个有效答案。</code></pre><h5 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h5><pre><code>输入: &quot;cbbd&quot;
+输出: &quot;bb&quot;</code></pre><blockquote>
+<h3 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h3></blockquote>
+<p><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener">LeetCode Q5</a></p>
+<hr>
+<blockquote>
+<h3 id="中心生成法"><a href="#中心生成法" class="headerlink" title="中心生成法"></a>中心生成法</h3></blockquote>
+<p>因为回文串具有对称的性质,我们可以遍历字符串的每个字符,然后对每个字符尝试向两边拓展,直到不是回文串.</p>
+<p>同时,要考虑到回文有两种形式：奇回文(<code>aba</code>)和偶回文(<code>abba</code>).我们需要对这两种形式做不同的循环判断.</p>
+<p>这里要注意一些细节：因为我们是先拓展边界再做判断,所以我们计算长度时需要将两边减去1,其次还要注意不要越界.这里还要注意一下越界判断和长度更新两个语句的位置.</p>
+<p>如果写成：</p>
+<pre><code>越界判断{
+    如果不相等{
+        长度判断和更新
+    }
+    位置更新
+}</code></pre><p>那么如果循环到了边界位置依然相等.如<code>abbb</code>,对<code>bbb</code>判断,最后一个<code>b</code>依然有回文对应,但是再向前就越界直接退出了,没有去做长度的判断和更新.</p>
+<p>所以我们应该写成</p>
+<pre><code>越界判断&amp;&amp;相等判断{
+    位置更新
+}
+长度更新和判断</code></pre><p>Java代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String longestPalindrome(String s) &#123;</span><br><span class="line">        if(s.equals(&quot;&quot;)) return &quot;&quot;;</span><br><span class="line">        int left&#x3D;0,right&#x3D;0;</span><br><span class="line">        int tl,tr;</span><br><span class="line">        for(int i&#x3D;0;i&lt;s.length();i++)&#123;</span><br><span class="line">            tl&#x3D;i-1;</span><br><span class="line">            tr&#x3D;i+1;</span><br><span class="line">            while(tl&gt;&#x3D;0&amp;&amp;tr&lt;s.length()&amp;&amp;s.charAt(tl)&#x3D;&#x3D;s.charAt(tr))&#123;</span><br><span class="line">                tl--;</span><br><span class="line">                tr++;</span><br><span class="line">            &#125;</span><br><span class="line">            if(tr-tl-1&gt;right-left+1)&#123;</span><br><span class="line">                left&#x3D;tl+1;</span><br><span class="line">                right&#x3D;tr-1;</span><br><span class="line">            &#125;</span><br><span class="line">            tl&#x3D;i;</span><br><span class="line">            tr&#x3D;i+1;</span><br><span class="line">            while(tl&gt;&#x3D;0&amp;&amp;tr&lt;s.length()&amp;&amp;s.charAt(tl)&#x3D;&#x3D;s.charAt(tr))&#123;</span><br><span class="line">                tl--;</span><br><span class="line">                tr++;</span><br><span class="line">            &#125;</span><br><span class="line">            if(tr-tl-1&gt;right-left+1)&#123;</span><br><span class="line">                left&#x3D;tl+1;</span><br><span class="line">                right&#x3D;tr-1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return s.substring(left,right+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>错误代码和正确代码对比</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;错误代码</span><br><span class="line">for(int j&#x3D;1;i-j&gt;&#x3D;0&amp;&amp;i+j&lt;s.length();j++)&#123;</span><br><span class="line">	if(s.charAt(i-j)!&#x3D;s.charAt(i+j))&#123;</span><br><span class="line">		if(j*2-1&gt;right-left+1)&#123;</span><br><span class="line">			left&#x3D;i-j+1;</span><br><span class="line">			right&#x3D;i+j-1;</span><br><span class="line">		&#125;</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;越界使得循环直接结束,在处于边界是没有做长度更新</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;正确代码</span><br><span class="line"> while(tl&gt;&#x3D;0&amp;&amp;tr&lt;s.length()&amp;&amp;s.charAt(tl)&#x3D;&#x3D;s.charAt(tr))&#123;</span><br><span class="line">	tl--;</span><br><span class="line">	tr++;</span><br><span class="line">&#125;</span><br><span class="line">if(tr-tl-1&gt;right-left+1)&#123;</span><br><span class="line">	left&#x3D;tl+1;</span><br><span class="line">	right&#x3D;tr-1;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;越界判断和长度更新分离,可以处理处于在边界的情况</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3></blockquote>
+<p>回文串具有这样的性质：如果将回文串两端的两个字符去掉,它依然是一个回文串.这就意味着我们可以使用动态规划来解决这道题.</p>
+<p>对于<code>(boolea)dp[i][j]</code>,如果为<code>true</code>,则表示从索引<code>j</code>到<code>i</code>的字符串是一个回文串.反之说明不是一个回文串.</p>
+<p>我们可以得到状态转移方程<code>dp[i][j]=charAt(i)==charAt(j)&amp;&amp;dp[i-1][j+1]</code></p>
+<p>特别的<code>i-j&lt;3</code>时,只要有<code>charAt(i)==charAt(j)</code>,dp[i][j]就为真.</p>
+<p>Java代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String longestPalindrome(String s) &#123;</span><br><span class="line">        if(s.equals(&quot;&quot;)) return &quot;&quot;;</span><br><span class="line">        int left&#x3D;0,right&#x3D;0;</span><br><span class="line">        boolean dp[][]&#x3D;new boolean[s.length()][s.length()];</span><br><span class="line">        for(int i&#x3D;0;i&lt;s.length();i++)&#123;</span><br><span class="line">            dp[i][i]&#x3D;true;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i&#x3D;1;i&lt;s.length();i++)&#123;		&#x2F;&#x2F;当i&#x3D;n时,dp[][n-1]已经全部判断过了</span><br><span class="line">            for(int j&#x3D;0;j&lt;i;j++)&#123;			&#x2F;&#x2F;所以dp[i-1][j+1]一定都已经经过了判断</span><br><span class="line">                if(s.charAt(i)&#x3D;&#x3D;s.charAt(j))&#123;</span><br><span class="line">                    if(i-j&lt;3) dp[i][j]&#x3D;true;</span><br><span class="line">                    else dp[i][j]&#x3D;dp[i-1][j+1];</span><br><span class="line">                &#125;</span><br><span class="line">                if(dp[i][j]&#x3D;&#x3D;true&amp;&amp;i-j&gt;right-left)&#123;		&#x2F;&#x2F;长度更新</span><br><span class="line">                    right&#x3D;i;</span><br><span class="line">                    left&#x3D;j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return s.substring(left,right+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<h3 id="马拉车-Manacher-算法"><a href="#马拉车-Manacher-算法" class="headerlink" title="马拉车(Manacher)算法"></a>马拉车(Manacher)算法</h3></blockquote>
+<p>无论是中心生成,还是动态规划,他们的时间复杂度都是O(n^2),Manacher算法可以将时间复杂度降低到O(n).</p>
+<p>阅读链接：<a href="https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/" target="_blank" rel="noopener">Manacher算法</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag"># 字符串</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/24/143%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/" rel="prev" title="143.重排链表">
+      <i class="fa fa-chevron-left"></i> 143.重排链表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/04/%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" rel="next" title="图的最短路径问题">
+      图的最短路径问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#示例1"><span class="nav-number">2.0.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#示例2"><span class="nav-number">2.0.2.</span> <span class="nav-text">示例2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#来源"><span class="nav-number">3.</span> <span class="nav-text">来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中心生成法"><span class="nav-number">4.</span> <span class="nav-text">中心生成法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态规划"><span class="nav-number">5.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#马拉车-Manacher-算法"><span class="nav-number">6.</span> <span class="nav-text">马拉车(Manacher)算法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+</body>
+</html>
