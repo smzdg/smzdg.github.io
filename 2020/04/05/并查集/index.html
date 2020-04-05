@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="并查集是一种简单而又有效的处理数据集合操作的数据结构.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并查集">
+<meta property="og:url" content="https://smzdg.kim/2020/04/05/%E5%B9%B6%E6%9F%A5%E9%9B%86/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="并查集是一种简单而又有效的处理数据集合操作的数据结构.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-05T13:15:53.760Z">
+<meta property="article:modified_time" content="2020-04-05T14:42:50.111Z">
+<meta property="article:author" content="smzdg">
+<meta property="article:tag" content="并查集">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/2020/04/05/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>并查集 | 未耳的辰凡</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/04/05/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tx2.jpg">
+      <meta itemprop="name" content="smzdg">
+      <meta itemprop="description" content="理性和感性是硬币的两面">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="未耳的辰凡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          并查集
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-05 21:15:53 / 修改时间：22:42:50" itemprop="dateCreated datePublished" datetime="2020-04-05T21:15:53+08:00">2020-04-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E6%96%B9%E6%B3%95%E4%B8%8E%E6%80%9D%E6%83%B3/" itemprop="url" rel="index"><span itemprop="name">算法方法与思想</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>并查集是一种简单而又有效的处理数据集合操作的数据结构.</p>
+<a id="more"></a>
+
+<h3 id="什么是并查集"><a href="#什么是并查集" class="headerlink" title="什么是并查集"></a>什么是并查集</h3><p>并查集,正如其名字一样,功能就是”并”,”查”,”集”.</p>
+<p>首先先解释三个字中唯一的一个名词：”集”.</p>
+<p>“集”,就是集合.我们可能会需要处理这样的一类问题：有一些数据,这些数据按照一定的要求被分入多个组.我们需要查询两个数据是不是在同一个组里面.</p>
+<p>如果仅仅是处理这个问题,我们可以直接使用语言自带的set数据结构就可以了.但是并查集除了集合和查询的功能外,还能都对集合进行合并.</p>
+<p>所以说,并查集就是一个有这样功能的数据结构：它把一堆数据按照要求分成多个集合,我们可以查询两个数据是不是在同一个集合里,同时我们还可以把任意的两个集合合并.</p>
+<h3 id="并查集是怎么实现的"><a href="#并查集是怎么实现的" class="headerlink" title="并查集是怎么实现的"></a>并查集是怎么实现的</h3><p>并查集的实现非常的简洁又优雅.它只需要一个数组即可.</p>
+<p>如：现在有6个地点A,B,C,D,E,F.在并查集中利用索引来表示不同的地点.如索引0表示A,索引1表示B….数组里的内容存储集合里的头结点.</p>
+<p>什么是头结点？简单来说,在上面的例子中,假如A,B,C在同一个集合里,我们就三个任选一个作为这个集合的头结点,也就是集合的标志.</p>
+<p>如A,B,C在同一个集合里,D单独在一个集合,E,F在一个集合里,那么我们的数组就是这样的.</p>
+<pre><code>索引 0 1 2 3 4 5
+值   0 0 0 3 4 4
+集合1：头结点0,包含0,1,2
+集合2：头结点3,包含3
+集合3：头结点4,包含4,5</code></pre><p>然后我们先要将A,B,C和E,F合并成一个集合,那么数组会变成这样</p>
+<pre><code>索引 0 1 2 3 4 5
+值   0 0 0 3 0 0</code></pre><p>或者</p>
+<pre><code>索引 0 1 2 3 4 5
+值   4 4 4 3 4 4</code></pre><p>但实际情况下往往是这样的,为什么会是这样看到代码实现我们就明白了.</p>
+<pre><code>索引 0 1 2 3 4 5
+值   0 0 0 3 0 4</code></pre><p>如何进行查询呢？比如说什么的数组我们想查询2和5是不是在一个集合里.我们先读取2,值是0,我们再读取索引0,发现值和索引是一样,我们就认为2在集合0里.对于5,其值是4,读取索引为4的值,值是0,读取0,索引和值一样.因此5和2都是在集合0里.</p>
+<p>在上面我们演示了并查集的三个功能,接下来我们介绍并查集的具体代码.</p>
+<h3 id="并查集代码实现"><a href="#并查集代码实现" class="headerlink" title="并查集代码实现"></a>并查集代码实现</h3><p>首先我们需要一个数组,初始情况下我们会让索引和值相同,表示它们各自独自形成一个集合.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; res(n);</span><br><span class="line">for(int i&#x3D;0;i&lt;n;i++)&#123;</span><br><span class="line">	res[i]&#x3D;i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们实现并查集的查询功能.在并查集中,索引和值相等时才表示我们找到了头结点,否则我们用值作为索引进行寻找.有了这个我们可以很轻松的得到代码.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int find(vector&lt;int&gt; res,int n)&#123;</span><br><span class="line">	while(res[n]!&#x3D;n)&#123;</span><br><span class="line">		n&#x3D;res[n];</span><br><span class="line">	&#125;</span><br><span class="line">	return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者是递归形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int find(vector&lt;int&gt; res,int n)&#123;</span><br><span class="line">	if(res[n]&#x3D;&#x3D;n) return n;</span><br><span class="line">	return find(res,res[n]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后是合并功能.在上面的演示中可以知道,我们先找到两个集合的头结点,然后只需要改变两个集合中某一个的头结点的值即可.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void join(vector&lt;int&gt;&amp; res,int n,int m)&#123;</span><br><span class="line">	n&#x3D;find(res,n);</span><br><span class="line">	m&#x3D;find(res,m);</span><br><span class="line">	res[m]&#x3D;n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>是不是非常的简洁而又优雅.</p>
+<h3 id="路径压缩"><a href="#路径压缩" class="headerlink" title="路径压缩"></a>路径压缩</h3><p>现在考虑一下并查集的查询功能的时间复杂度,我们会发现它的最坏情况似乎不太乐观：如果它们都在一个集合里,而恰巧每一个索引的值都是下一个索引.那么我们查询第一个索引所在集合时,需要O(n)的时间才能找到它所在的集合.</p>
+<p>不难知道,最坏情况的出现是因为我们在合并集合的时候只将集合头结点的值改变了,这才导致了后序查询的繁琐.为了解决这个问题,我们可以使用路径压缩.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void find(vector&lt;int&gt; res,int n)&#123;</span><br><span class="line">	if(res[n]&#x3D;&#x3D;n) return n;</span><br><span class="line">	return res[n]&#x3D;find(res,res[n]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用路径压缩后,我们每次查询后可以将中间多余的跳转去除,直接指向头结点.如果我们下次再次查询可以大大节省时间.</p>
+<h3 id="并查集和树"><a href="#并查集和树" class="headerlink" title="并查集和树"></a>并查集和树</h3><p>乍一看,并查集和树之间似乎风马流不相及,但实际上并查集的实质就是一棵树.</p>
+<p>考虑一个这样的并查集：</p>
+<pre><code>索引 0 1 2 3 4 5 6 7 8
+值   0 0 1 1 2 6 5 6 7</code></pre><p>在这个并查集中有两个集合,每一个集合形成了一棵树.</p>
+<p>对于第一个集合,实际上是形成了如下图的一棵树.</p>
+<pre><code>     0
+   /   
+  1
+ / \
+2   3
+ \
+  4</code></pre><p>通过观察这棵树我们也不难明白,为什么我们在前面会有头结点的称呼.这正是借用了并查集的树的概念.</p>
+<p>对于第二个集合：</p>
+<pre><code>  6
+ / \
+5   7
+   /
+  8</code></pre><p>集合合并,就是将其中一个集合的树的头结点连接到另外一个集合的树的头结点下.如我们要把上面两个集合合并.</p>
+<pre><code>     0
+   /   \
+  1     6
+ / \   / \
+2   3  5  7
+ \       /
+  4     8</code></pre><p>查询,就是从查询节点出发,逆向向上查找头结点.</p>
+<p>路径压缩又是什么呢？就是把树中的一个节点直接连接到头结点上,这样我们向上一步就能找到头结点了.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag"># 并查集</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/04/%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" rel="prev" title="图的最短路径问题">
+      <i class="fa fa-chevron-left"></i> 图的最短路径问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/05/547.%E6%9C%8B%E5%8F%8B%E5%9C%88/" rel="next" title="547.朋友圈">
+      547.朋友圈 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是并查集"><span class="nav-number">1.</span> <span class="nav-text">什么是并查集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并查集是怎么实现的"><span class="nav-number">2.</span> <span class="nav-text">并查集是怎么实现的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并查集代码实现"><span class="nav-number">3.</span> <span class="nav-text">并查集代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路径压缩"><span class="nav-number">4.</span> <span class="nav-text">路径压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并查集和树"><span class="nav-number">5.</span> <span class="nav-text">并查集和树</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+</body>
+</html>
