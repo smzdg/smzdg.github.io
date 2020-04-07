@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="什么是拓扑排序说到拓扑排序在现实世界中的例子,最出名的就是课程安排.例如,如果我们想要学大学物理,需要先学高等数学.想要学习程序设计,需要先学一门编程语言…也就是说我们在学习某些课程之前需要先学习一些其他课程.那么,我们如何安排出一条合理的学习路线呢？这里就需要用到拓扑排序. 从抽象的意义上来讲拓扑排序是一个有向无环图的所有顶点的线性序列。且该序列必须满足下面两个条件：    每个顶点出现且只">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拓扑排序">
+<meta property="og:url" content="https://smzdg.kim/2020/04/06/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="什么是拓扑排序说到拓扑排序在现实世界中的例子,最出名的就是课程安排.例如,如果我们想要学大学物理,需要先学高等数学.想要学习程序设计,需要先学一门编程语言…也就是说我们在学习某些课程之前需要先学习一些其他课程.那么,我们如何安排出一条合理的学习路线呢？这里就需要用到拓扑排序. 从抽象的意义上来讲拓扑排序是一个有向无环图的所有顶点的线性序列。且该序列必须满足下面两个条件：    每个顶点出现且只">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-06T14:55:11.848Z">
+<meta property="article:modified_time" content="2020-04-07T03:51:23.456Z">
+<meta property="article:author" content="smzdg">
+<meta property="article:tag" content="图">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/2020/04/06/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>拓扑排序 | 未耳的辰凡</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/04/06/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tx2.jpg">
+      <meta itemprop="name" content="smzdg">
+      <meta itemprop="description" content="理性和感性是硬币的两面">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="未耳的辰凡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          拓扑排序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-06 22:55:11" itemprop="dateCreated datePublished" datetime="2020-04-06T22:55:11+08:00">2020-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-07 11:51:23" itemprop="dateModified" datetime="2020-04-07T11:51:23+08:00">2020-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E6%96%B9%E6%B3%95%E4%B8%8E%E6%80%9D%E6%83%B3/" itemprop="url" rel="index"><span itemprop="name">算法方法与思想</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+
+<h3 id="什么是拓扑排序"><a href="#什么是拓扑排序" class="headerlink" title="什么是拓扑排序"></a>什么是拓扑排序</h3><p>说到拓扑排序在现实世界中的例子,最出名的就是课程安排.例如,如果我们想要学大学物理,需要先学高等数学.想要学习程序设计,需要先学一门编程语言…也就是说我们在学习某些课程之前需要先学习一些其他课程.那么,我们如何安排出一条合理的学习路线呢？这里就需要用到拓扑排序.</p>
+<p>从抽象的意义上来讲拓扑排序是一个有向无环图的所有顶点的线性序列。且该序列必须满足下面两个条件：
+ </p>
+<ul>
+<li>每个顶点出现且只出现一次</li>
+<li>若存在一条从顶点 A 到顶点 B 的路径，那么在序列中顶点 A 出现在顶点 B 的前面</li>
+</ul>
+<h3 id="拓扑排序一定存在吗"><a href="#拓扑排序一定存在吗" class="headerlink" title="拓扑排序一定存在吗"></a>拓扑排序一定存在吗</h3><p>答案是否定的.</p>
+<p>还是前面课程安排的例子：如果学习课程A之前我们需要学习课程B和C,但是学习课程B之前却要学习课程A,显然我们是不可能完成这个任务的(记住要学习一项课程你必须要把所有的先修课程全部学完才行,不要以为学习了课程C就能学习课程A了).这个情况放到图中就是说明图中有环.</p>
+<p>先注意一点,拓扑排序是在有向图的基础上进行讨论,有向图的环是首尾相接的.</p>
+<p>所以我们的算法首先要解决的就是确定拓扑排序是否存在,也就是有向图是否有环.</p>
+<h3 id="一个自然的想法"><a href="#一个自然的想法" class="headerlink" title="一个自然的想法"></a>一个自然的想法</h3><p>一个非常容易想到的方法就是使用深度优先搜索对图的每条路径进行搜索,如果出现了重复就判断出有环.</p>
+<p>原题：<a href="https://leetcode-cn.com/problems/course-schedule/" target="_blank" rel="noopener">LeedCode Q207</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;</span><br><span class="line">	vector&lt;vector&lt;int&gt;&gt; graph(numCourses,vector&lt;int&gt;(numCourses));</span><br><span class="line">	vector&lt;int&gt;rnum(numCourses,0);</span><br><span class="line">	for(int i&#x3D;0;i&lt;prerequisites.size();i++)&#123;	&#x2F;&#x2F;寻找入度为0的点,作为起点</span><br><span class="line">		graph[prerequisites[i][0]][prerequisites[i][1]]&#x3D;1;</span><br><span class="line">		rnum[prerequisites[i][1]]++;</span><br><span class="line">	&#125;</span><br><span class="line">	if(rnum.empty()) return false;</span><br><span class="line">	for(int i&#x3D;0;i&lt;rnum.size();i++)&#123;</span><br><span class="line">		vector&lt;int&gt; visited(numCourses,0);</span><br><span class="line">		visited[i]&#x3D;1;</span><br><span class="line">		if(!dfs(graph,visited,i)) return false;</span><br><span class="line">	&#125;</span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool dfs(vector&lt;vector&lt;int&gt;&gt;&amp; graph,vector&lt;int&gt;&amp; visited,int n)&#123;</span><br><span class="line">	for(int i&#x3D;0;i&lt;graph.size();i++)&#123;</span><br><span class="line">		if(graph[n][i]&#x3D;&#x3D;1)&#123;</span><br><span class="line">			if(visited[i]&#x3D;&#x3D;1) return false;		&#x2F;&#x2F;如果访问到路径上已经访问过的,说明有环</span><br><span class="line">			else&#123;</span><br><span class="line">				visited[i]&#x3D;1;</span><br><span class="line">				if(!dfs(graph,visited,i)) return false;</span><br><span class="line">				visited[i]&#x3D;0;</span><br><span class="line">			&#125;   </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这个算法的效率非常差,我们会把一些节点遍历很多次.</p>
+<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><p>对于上面的DFS的问题,我们可以想到一个优化的思路：做一下路径优化,减少重复检查的情况.例如一个节点全部检查完毕后,打上另外一个标记,表示这个节点已经被彻底检查,下次遇到这个节点可以直接返回.</p>
+<p>这个优化已经可以让程序运行的比较好了,但是我们在选择搜索起点时创建了一个各个点入度的数组,我们能不能重复的利用这个数组呢？BFS就可以做到这一点.</p>
+<p>BFS按照下列步骤执行：</p>
+<ul>
+<li>找入度为0的点入队,遍历与其相连的出边,另一端的点入度减1</li>
+<li>重复上叙步骤直到所有点都被遍历(无环)或无度为0的点(有环)</li>
+</ul>
+<p>也就是是,我们先找到图中入度为0的点,也就是起点,把它们连同它们的边全部去掉,必然又会出现新的一批入度为0的点.不断重复这个步骤.如果有环,构成环的点显然无论如何都不可能让自己的入度为0.</p>
+<h3 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h3><p>我们能不能不去算入度呢？能!DFS就能做到这一点.这也就是为什么没有将上面的原DFS的优化展开说的原因：有更好的方法为什么不选择更好的呢？</p>
+<p>新DFS可以任意选择一个起点,然后我们进行回溯.也就是说,如果我们想要学课程A,就去找找学课程A前需要先学一些什么课程.以此类推.</p>
+<p>等到所有的需要先学的课程全部找出来,我们在去找其他还没有学的课程,重复这个过程.如果有向图有环,那么我们在回溯时会遇到自己已经走过的节点.</p>
+<h3 id="如何实现拓扑排序"><a href="#如何实现拓扑排序" class="headerlink" title="如何实现拓扑排序"></a>如何实现拓扑排序</h3><p>我们已经介绍了如何确定有向图是否有环,现在我们可以开始进行拓扑排序了.</p>
+<h5 id="BFS-1"><a href="#BFS-1" class="headerlink" title="BFS"></a>BFS</h5><p>在上叙的BFS中,我们对节点的遍历顺序实际上就是拓扑排序：不断选出入度为0的节点,将这个节点和与它相连的边全部去掉.这一层层选下来的正是拓扑排序的顺序.也就是说我们可以同时进行拓扑排序和有向图是否有环的判断.</p>
+<p>具体实现</p>
+<p>原题<a href="https://leetcode-cn.com/problems/course-schedule-ii/" target="_blank" rel="noopener">LeetCode Q210</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; findOrder(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;</span><br><span class="line">	vector&lt;vector&lt;bool&gt;&gt; graph(numCourses,vector&lt;bool&gt;(numCourses,false));</span><br><span class="line">	vector&lt;int&gt; rnum(numCourses,0);</span><br><span class="line">	vector&lt;int&gt; ans;</span><br><span class="line">	queue&lt;int&gt; que;</span><br><span class="line">	for(int i&#x3D;0;i&lt;prerequisites.size();i++)&#123;</span><br><span class="line">		graph[prerequisites[i][1]][prerequisites[i][0]]&#x3D;true;</span><br><span class="line">		rnum[prerequisites[i][0]]++;	&#x2F;&#x2F;入度统计</span><br><span class="line">	&#125;</span><br><span class="line">	for(int i&#x3D;0;i&lt;numCourses;i++)&#123;</span><br><span class="line">		if(rnum[i]&#x3D;&#x3D;0)&#123;</span><br><span class="line">			que.push(i);</span><br><span class="line">			ans.push_back(i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	while(!que.empty())&#123;</span><br><span class="line">		int s&#x3D;que.front();</span><br><span class="line">		que.pop();</span><br><span class="line">		for(int j&#x3D;0;j&lt;numCourses;j++)&#123;</span><br><span class="line">			if(graph[s][j]&#x3D;&#x3D;true)&#123;</span><br><span class="line">				rnum[j]--;</span><br><span class="line">				if(rnum[j]&#x3D;&#x3D;0)&#123;</span><br><span class="line">					que.push(j);</span><br><span class="line">					ans.push_back(j);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	if(ans.size()&#x3D;&#x3D;numCourses) return ans;</span><br><span class="line">	ans.clear();</span><br><span class="line">	return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="DFS-1"><a href="#DFS-1" class="headerlink" title="DFS"></a>DFS</h5><p>同样的,我们不免设想,前面的DFS是不是稍加改变也可以进行拓扑排序呢？但是我们DFS对节点的选择似乎是无序的,例如我们做完了一边dfs,但是还有节点没有选择,这些没有选择的节点应该放在已经排好的序列的什么位置呢？</p>
+<p>在这里要先提一句,拓扑排序的从左到右的顺序是有向图指向的顺序,也就是说对于课程A,如果需要先学课程B和C,那么B和C一定在A的前面.如果课程A和课程B没有有向的路径连接,就像下图：</p>
+<pre><code>    &gt;A    
+  /
+C
+  \
+    &gt;B</code></pre><p>学了C后可以学A也可以学B,而且两者没有互相影响,那么毫无疑问,你可以先学A也可以先学B,在拓扑排序中A和B的相对位置是随意的.</p>
+<p>再回到DFS中来.当我们对一个节点,设它为n节点,进行回溯时,只要把回溯到的节点不断插入到最前面,在代码上可以表现为一个节点回溯完成后,就把它插入序列.越深的节点是越早结束回溯的,所以生成的顺序正是拓扑排序的顺序.</p>
+<p>当n节点完成了回溯后,那么还没有加入到序列的节点只剩下两种节点了：要么是n节点的后序节点,要么就是和n没有路径连接的节点.我们之前已经说了,没有路径连接的节点的顺序是任意的,n节点的后序节点应该是在放在n节点的后面.好了,那我们就同一安排,全部放在后面就好了.不断重复这个过程,拓扑排序也就完成了.</p>
+<p>有人可能会问,我不喜欢回溯,可以直接找n节点的出边做dfs呢,也是可以的,只是生成的顺序是反的.(我的代码就是忘记应该是做回溯了,只好最后再做个翻转).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; findOrder(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;</span><br><span class="line">	vector&lt;vector&lt;int&gt;&gt; graph(numCourses);</span><br><span class="line">	vector&lt;int&gt; used(numCourses,0);</span><br><span class="line">	vector&lt;int&gt; ans;</span><br><span class="line">	for(int i&#x3D;0;i&lt;prerequisites.size();i++)&#123;</span><br><span class="line">		graph[prerequisites[i][1]].push_back(prerequisites[i][0]);</span><br><span class="line">	&#125;</span><br><span class="line">	for(int i&#x3D;0;i&lt;numCourses;i++)&#123;</span><br><span class="line">		if(used[i]&#x3D;&#x3D;0)&#123;</span><br><span class="line">			vector&lt;int&gt; visited(numCourses,0);</span><br><span class="line">			visited[i]&#x3D;1;</span><br><span class="line">			if(!dfs(graph,visited,used,ans,i))&#123;</span><br><span class="line">				ans.clear();</span><br><span class="line">				return ans;</span><br><span class="line">			&#125;</span><br><span class="line">			ans.push_back(i);</span><br><span class="line">			used[i]&#x3D;1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	reverse(ans.begin(),ans.end());</span><br><span class="line">	return ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool dfs(vector&lt;vector&lt;int&gt;&gt;&amp; graph,vector&lt;int&gt;&amp; visited,vector&lt;int&gt;&amp; used,vector&lt;int&gt;&amp; ans,int n)&#123;</span><br><span class="line">	for(int i&#x3D;0;i&lt;graph[n].size();i++)&#123;</span><br><span class="line">		if(visited[graph[n][i]]&#x3D;&#x3D;1) return false;</span><br><span class="line">		if(used[graph[n][i]]&#x3D;&#x3D;1) continue;</span><br><span class="line">		visited[graph[n][i]]&#x3D;1;</span><br><span class="line">		if(!dfs(graph,visited,used,ans,graph[n][i])) return false;</span><br><span class="line">		ans.push_back(graph[n][i]);</span><br><span class="line">		used[graph[n][i]]&#x3D;1;</span><br><span class="line">		visited[graph[n][i]]&#x3D;0;</span><br><span class="line">	&#125;</span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="拓扑排序与树"><a href="#拓扑排序与树" class="headerlink" title="拓扑排序与树"></a>拓扑排序与树</h3><p>前面介绍了拓扑排序的两种方法：DFS和BFS.这两种方法都很容易让人与树产生联想.实际上,如果你把图的DFS和BFS走过的点和边单独拿出来,组成的就是一棵树.那么拓扑排序和树之间的关系是什么呢.</p>
+<p>拓扑排序中的图一定是有向图.对于一个连通的有向图而言,它的DFS/BFS走过的路径会是一棵树.我们不免想知道DFS/BFS的顺序和拓扑排序会不会有什么关联呢.</p>
+<p>我们先从拓扑排序的BFS方法开始：显然,拓扑排序的BFS方法有着明显的层次遍历的特征,而层次遍历正是树的BFS的方法.不过在拓扑排序中初始状态下可能有多个入度为0的点.也就是说有向图可以看成多棵树的杂合,树之间有的节点被连在了一起.而有向图的拓扑排序正是对这些树同时开始层次遍历.</p>
+<p>假如有向图有2个入度为0的点,那么拓扑排序的顺序可能会是这样的：</p>
+<pre><code>(A树第1层)(B树第一层)(A树第二层)(B树第二层)...</code></pre><p>但是两棵树之间并没有严格的先后顺序,B树第1层在A树第2层后面可以吗？当然可以.就好比学了课程B才能学课程A,但是与课程A无关的课程C无论是安排在课程A前还课程A后都是一样的.</p>
+<p>所以拓扑排序实际上是这样的</p>
+<pre><code>(A树第1层)...(A树第2层)...(A树第3层)......
+&quot;...&quot;为空或者是按顺序插入B树第i层</code></pre><p>再看到DFS,DFS的节点是任选的,也就是说这个节点可能是A树第三层的最中间的那个节点,假如它是节点i,对它回溯可以得到：</p>
+<pre><code>(A树第1层)(A树第2层)i</code></pre><p>但如果我们接下来选到的节点不是在A树第3层,而是在B树第二层的节点k,那么得到：</p>
+<pre><code>(A树第1层)(A树第2层)i(B树第一层)k</code></pre><p>似乎A树第3层被分开了,但是我们仔细一想,这样似乎是可以的.你学了课程A后可以学课程B和C,显然先学B或者先学C甚至学与ABC无关的课程D都是可以的.所以拓扑排序应该是这样的：</p>
+<pre><code>..(A..树..第..一..层)..(A..树..第..二..层)......
+&quot;..&quot;为空或者是按顺序插入B树第i层的任意个</code></pre><p>或许我们还可以这样想：一棵树可以被分成三个部分,根节点,左子树,右子树.现在规定对于每棵树,我们可以拿走它的根节点,然后这棵树就会分裂为两棵树：它的左子树和右子树,这两棵树又变成和原树地位相等的树,你可以随时取走它的根节点,它也会因此而继续分裂.</p>
+<p>拓扑排序就是在不断继续这样的一个过程,我们看看DFS：拓扑排序的DFS要先回溯再把节点加入到序列中.也就是说我们选择了一个节点后,向上找到整棵树的根节点,然后开始我们前面所说的过程：拿掉根节点,原树分裂.一直到我们一开始选择的节点.下一次DFS的序列是跟在原序列后面就是件很自然的事情了.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE/" rel="tag"># 图</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/06/%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="prev" title="图的最小生成树">
+      <i class="fa fa-chevron-left"></i> 图的最小生成树
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是拓扑排序"><span class="nav-number">1.</span> <span class="nav-text">什么是拓扑排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓扑排序一定存在吗"><span class="nav-number">2.</span> <span class="nav-text">拓扑排序一定存在吗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个自然的想法"><span class="nav-number">3.</span> <span class="nav-text">一个自然的想法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BFS"><span class="nav-number">4.</span> <span class="nav-text">BFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DFS"><span class="nav-number">5.</span> <span class="nav-text">DFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现拓扑排序"><span class="nav-number">6.</span> <span class="nav-text">如何实现拓扑排序</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BFS-1"><span class="nav-number">6.0.1.</span> <span class="nav-text">BFS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DFS-1"><span class="nav-number">6.0.2.</span> <span class="nav-text">DFS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓扑排序与树"><span class="nav-number">7.</span> <span class="nav-text">拓扑排序与树</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"smzdg.kim","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Prim算法与Dijkstra算法的思想非常相似,解法也比较相像.本文将简单的讨论一下Prim算法与Dijkstra算法的相似之处与区别.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prim算法与Dijkstra算法比较">
+<meta property="og:url" content="https://smzdg.kim/2020/04/06/Prim%E7%AE%97%E6%B3%95%E4%B8%8EDijkstra%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/index.html">
+<meta property="og:site_name" content="未耳的辰凡">
+<meta property="og:description" content="Prim算法与Dijkstra算法的思想非常相似,解法也比较相像.本文将简单的讨论一下Prim算法与Dijkstra算法的相似之处与区别.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-05T16:05:31.240Z">
+<meta property="article:modified_time" content="2020-04-06T02:40:51.502Z">
+<meta property="article:author" content="smzdg">
+<meta property="article:tag" content="图">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://smzdg.kim/2020/04/06/Prim%E7%AE%97%E6%B3%95%E4%B8%8EDijkstra%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Prim算法与Dijkstra算法比较 | 未耳的辰凡</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">未耳的辰凡</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">人类的悲欢并不相通...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://smzdg.kim/2020/04/06/Prim%E7%AE%97%E6%B3%95%E4%B8%8EDijkstra%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/tx2.jpg">
+      <meta itemprop="name" content="smzdg">
+      <meta itemprop="description" content="理性和感性是硬币的两面">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="未耳的辰凡">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Prim算法与Dijkstra算法比较
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-06 00:05:31 / 修改时间：10:40:51" itemprop="dateCreated datePublished" datetime="2020-04-06T00:05:31+08:00">2020-04-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E6%96%B9%E6%B3%95%E4%B8%8E%E6%80%9D%E6%83%B3/" itemprop="url" rel="index"><span itemprop="name">算法方法与思想</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Prim算法与Dijkstra算法的思想非常相似,解法也比较相像.本文将简单的讨论一下Prim算法与Dijkstra算法的相似之处与区别.</p>
+<a id="more"></a>
+
+<h3 id="最小路径问题和最小生成树"><a href="#最小路径问题和最小生成树" class="headerlink" title="最小路径问题和最小生成树"></a>最小路径问题和最小生成树</h3><p>Prim算法解决的是最小生成树的问题,而Dijkstra算法解决的是最小路径问题.这两个问题之间的区别是什么呢？</p>
+<p>在前面我们介绍了最小路径问题的三种情况：单源对单源,多源对多源,单源对多源.Dijkstra算法能够解决的是单源对多源的问题.</p>
+<p>最小生成树问题问的又是什么呢？其实我们仔细一想,会发现它问的也是一个最小路径的问题.但这里的最小路径的要求和前面有所不同：前面所提到的最小路径只需要将两点连接即可.而最小生成树要求的是经过所有的顶点将两点连接起来的最短路径.</p>
+<p>但因为两种都是求最短路径,算法存在相似也不足为其.</p>
+<h3 id="Prim算法和Dijkstra算法的思想"><a href="#Prim算法和Dijkstra算法的思想" class="headerlink" title="Prim算法和Dijkstra算法的思想"></a>Prim算法和Dijkstra算法的思想</h3><p>Prim算法解决最小生成树的思路是：我们任意选择一个点开始拓展,然后寻找出边中最小的点,将这条出边,出边另一端的和加入到生成树中.然后我们重复这个过程,但是要加上一个步骤：检查最小出边的点是否已经被遍历.直到图中所有的点都被加入到生成树中.</p>
+<p>Dijkstra算法解决最小路径问题的思路是：我们任意选择一个点开始拓展,寻找出边中最小的点,然后将这个点加入到点集中,然后继续寻找点集出边最小的点,注意这里也要检查是否已经把这个点加入到点集中了.重复这个过程直到所有的点都被加入到点集中.</p>
+<p>从上面的描述中我们可以看到,Prim算法和Dijkstra算法在思想上几乎是一模一样,都是利用贪心进行拓展.</p>
+<h3 id="Prim算法和Dijk算法在实现上的不同"><a href="#Prim算法和Dijk算法在实现上的不同" class="headerlink" title="Prim算法和Dijk算法在实现上的不同"></a>Prim算法和Dijk算法在实现上的不同</h3><p>先在这里贴出Prim算法和Dijkstra算法的实现</p>
+<p>Prim算法/C++</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">int Prim(vector&lt;vector&lt;int&gt; &gt; graph,int N)&#123;</span><br><span class="line">	int minDis&#x3D;0;</span><br><span class="line">	vector&lt;int&gt; dis&#x3D;graph[1];</span><br><span class="line">	dis[1]&#x3D;0;</span><br><span class="line">	vector&lt;int&gt; visited(N+1,0);</span><br><span class="line">	visited[1]&#x3D;1;</span><br><span class="line">	</span><br><span class="line">	for(int i&#x3D;1;i&lt;&#x3D;N-2;i++)&#123;</span><br><span class="line">		int minD&#x3D;0xffff,minP;</span><br><span class="line">		for(int j&#x3D;1;j&lt;&#x3D;N;j++)&#123;</span><br><span class="line">			if(visited[j]&#x3D;&#x3D;0&amp;&amp;dis[j]&lt;minD)&#123;</span><br><span class="line">				minD&#x3D;dis[j];</span><br><span class="line">				minP&#x3D;j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		visited[minP]&#x3D;1;</span><br><span class="line">		for(int k&#x3D;1;k&lt;&#x3D;N;k++)&#123;</span><br><span class="line">			if(visited[k]&#x3D;&#x3D;0&amp;&amp;dis[k]&gt;graph[minP][k])&#123;	&#x2F;&#x2F;区别1</span><br><span class="line">				dis[k]&#x3D;graph[minP][k];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	for(int i&#x3D;1;i&lt;&#x3D;N;i++)&#123;	&#x2F;&#x2F;区别2</span><br><span class="line">		minDis+&#x3D;dis[i];</span><br><span class="line">	&#125;</span><br><span class="line">	return minDis;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dijkstra算法/C++</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">int Dijkstra(vector&lt;vector&lt;int&gt; &gt;&amp; graph, int N, int K) &#123;</span><br><span class="line">    vector&lt;int&gt; dis&#x3D;graph[K];</span><br><span class="line">    dis[K]&#x3D;0;</span><br><span class="line">    vector&lt;int&gt; visited(N+1,0);</span><br><span class="line">    visited[K]&#x3D;1;</span><br><span class="line">	</span><br><span class="line">    for(int i&#x3D;1;i&lt;&#x3D;N-1;i++)&#123;</span><br><span class="line">        int minId&#x3D;0,minDis&#x3D;0xffff;</span><br><span class="line">        for(int j&#x3D;1;j&lt;&#x3D;N;j++)&#123;</span><br><span class="line">            if(visited[j]&#x3D;&#x3D;0&amp;&amp;minDis&gt;dis[j])&#123;</span><br><span class="line">                minDis&#x3D;dis[j];</span><br><span class="line">                minId&#x3D;j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        visited[minId]&#x3D;1;</span><br><span class="line">        for(int h&#x3D;1;h&lt;&#x3D;N;h++)&#123;</span><br><span class="line">			if(dis[h]&gt;dis[minId]+graph[minId][h])&#123;	&#x2F;&#x2F;区别1</span><br><span class="line">				dis[h]&#x3D;dis[minId]+graph[minId][h];</span><br><span class="line">			&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    int minDis&#x3D;0;</span><br><span class="line">    for(int i&#x3D;1;i&lt;&#x3D;N;i++)&#123;		&#x2F;&#x2F;区别2</span><br><span class="line">        if(dis[i]&#x3D;&#x3D;INT_MAX&#x2F;2) return -1;</span><br><span class="line">        minDis&#x3D;max(minDis,dis[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return minDis;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到这两个代码有两处不同,在代码中已经标注.</p>
+<p>我们先说说第二处不同,也就是最后的对dis数组的处理.在Prim算法中我们将dis数组里的值全部求和,而在Dijkstra算法中我们求dis数组中的最大值.为什么两者处理方式不同,这就和它们dis数组里储存的数据的意义有关.我们可以看到两端代码的第一处不同.</p>
+<p>在第一处不同之前,两段代码都是先寻找dis数组中还没有被访问的点中的最小值.随后,Prim算法寻找该点最小的出边的值最为新的dis数组里的值,而Dijkstra算法是将最小的出边的值加到dis数组里.</p>
+<p>说到这里我们就明白了,在Prim算法中,dis数组储存的是最小生成树已经生成的各条路径的长度,而在Dijkstra数组中存的是各个点到源点的最小路径.这样储存的原因也和两个算法要解决的问题有关.Prim算法需要先确保每个点都要走到,然后再保证记录最短.而Dijkstra算法要先确保距离最短,然后再确定各个终点.</p>
+<p>总之,Prim算法是正不断的更新未被访问的点到点集的距离,而Dijkstra算法是在不断更新各个点到源点的距离.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE/" rel="tag"># 图</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/05/547.%E6%9C%8B%E5%8F%8B%E5%9C%88/" rel="prev" title="547.朋友圈">
+      <i class="fa fa-chevron-left"></i> 547.朋友圈
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/06/%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" rel="next" title="图的最小生成树">
+      图的最小生成树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小路径问题和最小生成树"><span class="nav-number">1.</span> <span class="nav-text">最小路径问题和最小生成树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prim算法和Dijkstra算法的思想"><span class="nav-number">2.</span> <span class="nav-text">Prim算法和Dijkstra算法的思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prim算法和Dijk算法在实现上的不同"><span class="nav-number">3.</span> <span class="nav-text">Prim算法和Dijk算法在实现上的不同</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="smzdg"
+      src="/images/tx2.jpg">
+  <p class="site-author-name" itemprop="name">smzdg</p>
+  <div class="site-description" itemprop="description">理性和感性是硬币的两面</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">smzdg</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  
+</body>
+</html>
