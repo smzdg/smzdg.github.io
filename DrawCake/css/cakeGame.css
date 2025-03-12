@@ -103,6 +103,37 @@ body {
     display: none !important;
 }
 
+.cake {
+    width: 100px;
+}
+
+.table {
+    position: absolute;
+    top: 50%;          /* 上边距定位到 50% */
+    left: 50%;         /* 左边距定位到 50% */
+    transform: translate(-50%, -50%); /* 通过自身宽高回退 50% */
+    width: 1000px;
+}
+
+#myButton {
+    position: absolute;
+    top: 10px;    /* 距离顶部 10px */
+    right: 10px;  /* 距离右侧 10px */
+    padding: 10px 20px;
+    background-color: #4d3900;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 180px;   /* 宽度 */
+    height: 30px;   /* 高度 */
+}
+
+#myButton:hover {
+    background-color: #0056b3;
+}
+
 .icon {
     width: 100px;
 }
